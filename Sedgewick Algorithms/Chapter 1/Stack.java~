@@ -1,0 +1,43 @@
+import java.util.Iterator;
+
+public class Stack<Item> implements Iterator<Item>{
+	
+	class Node<Item>{
+		Item val;
+		Node next; 
+		
+		public Node(Item v, Node n){
+			val = v;
+			next = n;
+			
+		}
+	}
+	
+	private Node<Item> header;
+	int N = 0; 
+	
+	public void push(Item val){
+		N++;
+		header = new Node(val, header);  
+	}
+	
+	public Item pop(){
+		Item s = header.val;
+		header = header.next; 
+		return s;
+	}
+	
+	public Item peek(){
+		return header.val; 
+	}
+	
+	public void printStack(){
+		Node s = header; 
+		for(int i = 0; i < N; i++){
+			System.out.println(header.val); 
+			s = s.next; 
+		}
+	}
+	
+	
+}
