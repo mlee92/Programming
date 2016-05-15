@@ -1,0 +1,23 @@
+SILVERMORE
+=============================
+
+DESCRIPTION
+=============================
+Tool for financial analysis of stocks, derivates, and commodities. Built on R. Forecasting and position optimization. 
+
+HOW TO USE
+=============================
+
+Can be used as a library but also as a standalone application. 
+
+requires the following libraries:
+	quantmod
+
+AUTHORS 
+==============================
+Michael Peregrine Lee
+mperegrinelee@gmail.com 
+
+TRIVIA 
+==========================================
+The name, Silvermore, is taken from the name the famous Roaring 20s and Depression Era stocktrader, Jesse Lauriston Livermore, gave to his mansion on Long Island.  
