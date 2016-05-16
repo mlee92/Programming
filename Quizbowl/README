@@ -1,0 +1,13 @@
+QUIZBOWL
+================================
+
+Speed training program for verb conjugation for Certamen.
+
+PROJECTS
+================================
+
+LatinVerb - The actual training program, coded in C#, in /bin/ there is a Dictionary.txt, this is the verb bank. Latency.txt lets the user set the time lapse between each word.
+
+VerbConjugation - Answer generator, coded in C#
+
+
