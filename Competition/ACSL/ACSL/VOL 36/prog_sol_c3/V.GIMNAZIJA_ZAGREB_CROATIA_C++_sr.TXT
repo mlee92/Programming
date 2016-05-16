@@ -1,0 +1,74 @@
+/*
+Student name: Ivan Janjic
+Division: Senior
+School: V.gimnazija
+*/
+
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <vector>
+
+using namespace std;
+
+int b;
+char bx[10][10];
+int sx[]={1,-1,0,0};
+int sy[]={0,0,1,-1};
+int dx[]={-1,-1,1,1};
+int dy[]={-1,1,-1,1};
+vector<int> vb,tvx,tvy;
+
+void unos(char c) {
+    scanf("%d", &b);
+    for(int i=0;i<b;i++) {
+        int a;
+        scanf("%d", &a);
+        if(c=='b') vb.push_back(a);
+        if (a%5) bx[a/5][a%5-1]=c;
+        else bx[a/5-1][4]=c;
+    }
+return;
+}
+
+void kreni(int x) {
+
+    for(int i=0;i<4;i++) {
+        int tx,ty;
+        if(x%5) {tx=x/5; ty=x%5-1;}
+        else {tx=x/5-1; ty=4;}
+        tx+=dx[i];
+        ty+=dy[i];
+        if(tx<0 || tx>4 || ty<0 || ty>4) continue;
+        if(bx[tx][ty]=='c') {
+            tvx.push_back(tx);
+            tvy.push_back(ty);
+        }
+        if(bx[tx][ty]=='p') {
+            bx[tx][ty]='b';
+            bx[tx-dx[i]][ty-dy[i]]='p';
+            //preseli se, provjeri buduæe i ne zaboravi bio
+        }
+    }
+}
+
+int main(void) {
+
+    memset(bx,'p',sizeof bx);
+
+    unos('b');
+    unos('c');
+
+    /*for(int i=0;i<5;i++) {
+        for(int j=0;j<5;j++) {
+            printf("%c", bx[i][j]);
+        }
+        printf("\n");
+    }*/
+
+    for(int i=0;i<vb.size();i++) {
+        kreni(vb[i]);
+    }
+
+return 0;
+}

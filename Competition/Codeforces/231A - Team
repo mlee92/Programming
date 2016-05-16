@@ -1,0 +1,22 @@
+#include <iostream>
+
+using namespace std; 
+
+int problems [3]; 
+int solve; 
+
+bool checkIfSolve(){
+	int sum = problems[0] + problems[1] + problems[2]; 
+	return sum >= 2; 	
+}
+
+int main(){
+	int n;
+	solve = 0;
+	cin >> n; 
+	for(int i = 0; i < n; i++){
+		cin >> problems[0] >> problems[1] >> problems[2];
+		if(checkIfSolve()) { solve++; }
+	}
+	cout << solve << endl; 
+}

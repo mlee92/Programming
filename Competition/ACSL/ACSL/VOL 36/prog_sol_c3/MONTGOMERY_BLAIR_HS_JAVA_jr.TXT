@@ -1,0 +1,186 @@
+/**
+ Eshan Tewari
+ Montgomery Blair High School
+ ACSL Contest 3
+ Junior 5 Division
+ */
+import java.util.*;
+public class EshanTewariACSL3 {
+
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		char board[][] = new char[5][5];
+		for (int i = 1; i <=5; i++){
+			for (char[] row: board)
+			    Arrays.fill(row, 'n'); //Initialize board
+			System.out.print("Input "+i+": ");
+        	StringTokenizer st = new StringTokenizer(in.nextLine());
+        	//Populate Board
+        	int numwhite = Integer.parseInt(st.nextToken());
+        		for (int x = 0; x < numwhite; x++){
+        			int curr = Integer.parseInt(st.nextToken());
+        			curr -= 1;
+        			board[(int)(curr/5)][curr%5] = 'w';
+
+        		}
+        	int numblack = Integer.parseInt(st.nextToken());
+        		for (int x = 0; x < numblack; x++){        			
+        			int curr = Integer.parseInt(st.nextToken());
+        			curr -= 1;
+        			board[(int)(curr/5)][curr%5] = 'b';
+
+        		}
+        	int captured[] = new int[12];
+        	int cindex = 0;
+        	boolean found = false;
+        	for(int x = 0; x < 5; x++){ //Row
+        		if(found){ //exit if piece(s) already captured
+        			break;
+        		}
+        		for(int y = 0; y < 5; y++){ //Column
+        			if(board[x][y] == 'w'){
+        				if(y+2 < 5 && board[x][y+2] == 'b' && (board[x][y+1] == 'n')){ //check if white can go right and capture
+        					captured[cindex] = x*5+y+3;
+        					cindex ++;
+        					int check = y+3;
+        					while(check < 5){ //check if line of pieces exists to capture       						
+        						if(board[x][check] == 'b'){
+                					captured[cindex] = x*5+check+1;
+                					cindex ++;
+        						}
+        						else break;
+        					check ++;
+        					}
+        					found = true;
+        					break;
+        				}
+        				
+        				if(y-2 >= 0 && board[x][y-2] == 'b' && (board[x][y-1] == 'n')){ //check if white can go left and capture
+        					captured[cindex] = x*5+y-1;
+        					cindex ++;
+        					int check = y-3;
+        					while(check >= 0){
+        						if(board[x][check] == 'b'){
+                					captured[cindex] = x*5+check+1;
+                					cindex ++;
+                					
+        						}
+        						else break;
+        						check --;
+        					}
+        					found = true;
+        					break;
+        				}
+        				
+        				if(x+2 < 5 && board[x+2][y] == 'b' && (board[x+1][y] == 'n')){ //check if white can go down and capture
+        					captured[cindex] = (x+2)*5+y+1;
+        					cindex ++;
+        					int check = x+3;
+        					while(check < 5){
+        						if(board[check][y] == 'b'){
+        							captured[cindex] = check*5+y+1;
+                					cindex ++;
+        						}
+        						else break;
+        						check ++;
+        					}
+        					found = true;
+        					break;
+        				}
+        				
+        				if(x-2 >=0 && board[x-2][y] == 'b' && (board[x-1][y] == 'n')){ //check if white can go up and capture
+        					captured[cindex] = (x-2)*5+y+1;
+        					cindex ++;
+        					int check = x-3;
+        					while(check >= 0){
+        						if(board[check][y] == 'b'){
+        							captured[cindex] = check*5+y+1;
+                					cindex ++;
+        						}
+        						else break;
+        						check --;
+        					}
+        					found = true;
+        					break;
+        				}
+        				
+        				if(y+1 < 5 && y-1 >= 0 && board[x][y+1] == 'b' && board[x][y-1] == 'n'){ //check if white can move away left and capture to the right
+        					captured[cindex] = x*5+y+2;
+        					cindex ++;
+        					int check = y+2;
+        					while(check < 5){        						
+        						if(board[x][check] == 'b'){
+                					captured[cindex] = x*5+check+1;
+                					cindex ++;
+        						}
+        						else break;
+        					check ++;
+        					}
+        					found = true;
+        					break;
+        				}
+        				
+        				if(y+1 < 5 && y-1 >= 0 && board[x][y-1] == 'b' && board[x][y+1] == 'n'){ //check if white can move away right and capture to the left
+        					captured[cindex] = x*5+y;
+        					cindex ++;
+        					int check = y-2;
+        					while(check >= 0){        						
+        						if(board[x][check] == 'b'){
+                					captured[cindex] = x*5+check+1;
+                					cindex ++;
+        						}
+        						else break;
+        					check --;
+        					}
+        					found = true;
+        					break;
+        				}
+        				
+        				if(x+1 < 5 && x-1 >= 0 && board[x+1][y] == 'b' && board[x-1][y] == 'n'){ //check if white can move away up and capture downwards
+        					captured[cindex] = (x+1)*5+y+1;
+        					cindex ++;
+        					int check = x+2;
+        					while(check < 5){        						
+        						if(board[check][y] == 'b'){
+                					captured[cindex] = check*5+y+1;
+                					cindex ++;
+        						}
+        						else break;
+        					check ++;
+        					}
+        					found = true;
+        					break;
+        				}
+        				
+        				if(x+1 < 5 && x-1 >= 0 && board[x-1][y] == 'b' && board[x+1][y] == 'n'){ //check if white can move away down and capture upwards
+        					
+        					captured[cindex] = (x-1)*5+y+1;
+        					cindex ++;
+        					int check = x-2;
+        					while(check >= 0){        						
+        						if(board[check][y] == 'b'){
+                					captured[cindex] = check*5+y+1;
+                					cindex ++;
+        						}
+        						else break;
+        					check --;
+        					}
+        					found = true;
+        					break;
+        				}
+        			}
+        		}
+        	}
+        	if(cindex == 0){
+        		System.out.println("Output "+i+": NONE"); //check if no pieces can be captured
+        	}
+        	else{
+        		System.out.print("Output "+i+": ");
+        		for(int x = 0; x < cindex; x++){
+        			System.out.print(captured[x] + " ");
+        		}
+        	System.out.println();
+        	}
+		}
+	}
+}

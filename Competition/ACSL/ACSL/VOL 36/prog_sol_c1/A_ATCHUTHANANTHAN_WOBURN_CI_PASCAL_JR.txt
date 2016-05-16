@@ -1,0 +1,71 @@
+{
+Arun Atchuthananthan
+Woburn Collegiate Institute
+ACSL 2013-2014, #1
+Junior Division
+ACSL Scrabble
+
+Input without commas or line numbers, 
+but with spaces between the letters, e.g. "J A V A" without quotes.
+}
+
+var
+        a,b,c,d                              :integer;
+        trw,dow                              :boolean;
+        e,i,f,p,count,count1,count2,count3   :integer;
+        m                                    :Array[1..5] of char;
+        point,score                          :Array[1..5] of integer;
+        k,g,h                                :char;
+begin
+
+        readln(m[1],k,m[2],g,m[3],h,m[4]);
+        for p:=1 to 4 do
+        begin
+                if (m[p] = 'A') or (m[p] = 'E') then
+                        point[p] := 1
+                else if (m[p] = 'D') or (m[p] = 'R') then
+                        point[p] := 2
+                else if (m[p] = 'B') or (m[p] = 'M') then
+                        point[p] := 3
+                else if (m[p] = 'V') or (m[p] = 'Y') then
+                        point[p] := 4
+                else if (m[p] = 'J') or (m[p] = 'X') then
+                        point[p] := 8
+        end;
+        for p:=1 to 5 do
+        begin
+            readln(e);
+            trw:=False;
+            dow:=False;
+            score[1]:=point[1];
+            score[2]:=point[2];
+            score[3]:=point[3];
+            score[4]:=point[4];
+
+            for i:=1 to 4 do
+            begin
+                if ((e mod 3) = 0) AND ((e mod 6) > 0) then
+                        score[i]:=point[i]*2
+                else if (e mod 5)=0 then
+                        score[i]:=point[i]*3
+                else if (e mod 7)=0 then
+                begin
+                        if (dow=False) AND (trw=False) then
+                                dow:=True
+                end
+                else if (e mod 8) = 0 then
+                begin
+                        if (dow=False) AND (trw=False) then
+                                trw:=True
+                end;
+                e := e +1;
+            end;
+            count:=score[1]+score[2]+score[3]+score[4];
+            if dow=True then
+                count:=count*2;
+            if trw=True then
+                count:=count*3;
+            writeln(count);
+        end;
+        readln;
+end.

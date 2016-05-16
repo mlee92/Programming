@@ -1,0 +1,83 @@
+# Jared Zoneraich
+# Bergen County Academies
+# Intermediate Division
+
+import sys
+
+LETTER_VALUES = {"A" : 1, "E" : 1, "D" : 2, "R" : 2, "B" : 3, "M" : 3, "V" : 4, "Y" : 4, "J" : 8, "X" : 8}
+
+def main():
+	cases = []
+	
+	for i in range(6):
+		if i == 0:
+			word = (input("Enter the word (4 letters): ")).split(", ")
+			for j in range(0,len(word)):
+				word[j] = LETTER_VALUES[word[j].upper()]
+			continue
+		line = (input("Enter #, H/V: ")).split(", ")
+		pos = line[0]
+		dir = line[1].upper()
+		cases.append([pos, dir])
+	
+	for case in cases:
+		word_mult = 1
+		total = 0
+		current_pos = int(case[0])
+		if case[1] == "H": #check to see if doesnt fit
+			if (current_pos + 3) > 10 and (current_pos + 3) < 14 or (current_pos + 3) > 20 and (current_pos + 3) < 24 or (current_pos + 3) > 30 and (current_pos + 3) < 34 or (current_pos) > 37:
+				print("Error! Not valid.")
+				sys.exit(1)
+			for letter in word:
+				letter_mult = 1
+				mult = get_multiplier(current_pos)
+				if mult["word"]:
+					if word_mult != 1:
+						if mult["multiplier"] > word_mult:
+							word_mult = mult["multiplier"]
+					else:
+						word_mult = mult["multiplier"]
+				else:
+					letter_mult = mult["multiplier"]
+				total += letter_mult * letter
+				current_pos += 1
+			print(total * word_mult)
+		elif case[1] == "V": #check if doesnt fit
+			if current_pos > 10:
+				print("Error! Not Valid.")
+				sys.exit(1)
+			for letter in word:
+				letter_mult = 1
+				mult = get_multiplier(current_pos)
+				if mult["word"]:
+					if word_mult != 1:
+						if mult["multiplier"] > word_mult:
+							word_mult = mult["multiplier"]
+					else:
+						word_mult = mult["multiplier"]
+				else:
+					letter_mult = mult["multiplier"]
+				total += letter_mult * letter
+				current_pos += 10
+			print(total * word_mult)
+
+def get_multiplier(pos):
+	pos = int(pos)
+	if pos % 3 == 0:
+		i = 0
+		valid = True
+		while i <= pos: 
+			i += 3
+			if pos == i and valid:
+				return {"multiplier" : 2, "word" : False}
+			valid = not valid
+	if pos % 5 == 0:
+		return {"multiplier" : 3, "word" : False}
+	if pos % 7 == 0:
+		return {"multiplier" : 2, "word" : True}
+	if pos % 8 == 0:
+		return {"multiplier" : 3, "word" : True}
+	return {"multiplier" : 1, "word" : False}
+
+if __name__ == '__main__':
+	main()

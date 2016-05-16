@@ -1,0 +1,65 @@
+#
+# Full Name: Alexandra Oana Spãtãrelu
+# High School: "Elena Cuza" National College, Bucharest
+# IDE used: PyCharm 2.0.2
+# ACSL Contest 3 - Senior 5
+# 
+# The infix strings have to be in a file - "infix.txt",
+# which has to be placed in the same folder with the program.
+#
+input = open('infix.txt', 'r')
+input = (input.readlines())
+
+def is_operand(character):
+    if character >= 'A' and character <= 'Z':
+        return True
+    return False
+
+def bigger_precedence(operand_1, operand_2):
+    operand_1_precedence = None
+    operand_2_precedence = None
+    if operand_1 == '+' or operand_1 == '-':
+            operand_1_precedence = 6
+    else:
+        if operand_1 == '*' or operand_1 == '/':
+            operand_1_precedence = 5
+
+    if operand_2 == '+' or operand_2 == '-':
+        operand_2_precedence = 6
+    else:
+        if operand_2 == '*' or operand_2 == '/':
+            operand_2_precedence = 5
+    return operand_1_precedence <= operand_2_precedence
+
+
+for infix_string in input:
+    if infix_string[-1] == '\n':
+        infix_string = infix_string[:-1]
+
+    reversed_prefix_string = ''
+    reversed_infix_string = infix_string[::-1]
+    prefix_string = ''
+
+    operator_stack = []
+
+    for character in reversed_infix_string:
+        #print (character)
+        if is_operand(character):
+            reversed_prefix_string += character
+        else:
+            if character == ')':
+                operator_stack.append(character)
+            else:
+                if character == '(':
+                    while operator_stack[-1] != ')':
+                        reversed_prefix_string += operator_stack.pop()
+                    operator_stack.pop()
+                else:
+                    while len(operator_stack) > 0 and operator_stack[-1] != ')' and bigger_precedence(operator_stack[-1], character):
+                        reversed_prefix_string += operator_stack.pop()
+                    operator_stack.append(character)
+
+    while len(operator_stack) > 0:
+        reversed_prefix_string += operator_stack.pop()
+    prefix_string = reversed_prefix_string[::-1]
+    print (prefix_string)

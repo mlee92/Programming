@@ -1,0 +1,71 @@
+#Takoma Park M.S.
+#Jr-5
+#Contest 2
+#Dilhan Salgado
+
+def conc(listA):
+    old_string = listA
+    string = ""
+    for x in old_string:
+        string += x
+    return string
+
+def formatting(input_):
+    string = input_.split(',')
+    comma = False
+    if len(string) > 2:
+        comma = True
+    value = str(int(str(string.pop())))
+    string = conc(string)
+    
+    if "$" in string:
+        if string[0] == "$":
+            return "$" + value.strip()
+        string = list(string)
+        string.pop(0)
+        string = conc(string)
+        while "$" in string:
+            string = string[:string.find("$")] + string[string.find("$") + 1:]
+        string = formatting(string + "," + value)
+        for x in range(len(string)):
+            if string[x] != "*":
+                break
+        string = string[:x] + "$" + string[x:]
+        return string
+    
+    elif comma:
+            string = formatting(string + "," + value)
+            for x in range(len(string)-3,0,-3):
+                if string[x-1] == "*":
+                    break
+                string = string[:x] + "," + string[x:]
+            return string
+
+    elif "-" in string:
+        string = list(string)
+        string.pop(conc(string).find("-"))
+        if int(value) > 0:
+            intvalue = 1
+        elif int(value) < 1:
+            intvalue = -1
+        string = str(formatting(conc(string) + "," + str(abs(int(value)))))
+        if intvalue > 0:
+            return string + "*"
+        elif intvalue < 0:
+            return string + "-"
+        return string
+        
+    else:
+        output = str("%" + str(len(string)) + "d") % int(value)
+        new_output = ""
+        for x in list(output):
+            if x == " ":
+                new_output += "*"
+            else:
+                new_output += x
+        return new_output
+
+for x in range(1,6):
+    print(str(x) + ". " + formatting(input(str(x) + ". ")))
+
+input("Press Enter to EXIT: ")

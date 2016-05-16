@@ -1,0 +1,199 @@
+/**
+School name: National College Andrei Saguna, Brasov, Romania
+First, LAST Name: Gabriel Robert INELUS
+Senior 3 contest, 4
+Input file: numble.in
+Output is on the screen
+*/
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+#include <queue>
+
+using namespace std;
+char a[15],b[15],c[15];
+int len1,len2,len3,cross1,cross2;
+int nr1[15],N,nr2[15],P,nr3[15],K;
+int sterse1[15],sterse2[15],sterse3[15];
+int bun1[15],bun2[15],bun3[15];
+int nrb1,nrb2,nrb3;
+int c1,c2,h1,h2;
+queue<pair<int,int> >Q;
+
+void prepare()
+{
+    for(int i = 1; i <= 7; ++i)
+        if(nr1[i] == cross1)
+        {
+            sterse1[i] = -1;
+            break;
+        }
+    for(int i = 1; i <= 7; ++i)
+        if(nr1[i] == cross2)
+        {
+            sterse1[i] = -1;
+            break;
+        }
+    for(int i = 1; i <= 7; ++i)
+        if(nr2[i] == cross1)
+        {
+            sterse2[i] = -1;
+            break;
+        }
+    for(int i = 1; i <= 7; ++i)
+        if(nr3[i] == cross2)
+        {
+            sterse3[i] = -1;
+            break;
+        }
+}
+void sterge(int v[15],int sterg[15],int lg)
+{
+    int nrs = 0,sumc = 0;
+    if(lg == 0) return;/// n-am de sters
+    for(int i = 1; i <=7; ++i)/// sigur sterg
+    {
+        if(sterg[i] != -1) /// am voie sa-l sterg
+        {
+            sterg[i] = 1;
+            int xs = v[i];
+            Q.push(make_pair(i,xs));
+            sumc  += v[i];
+            ++nrs;
+
+        }
+        if(nrs == lg)
+        {
+            if(sumc % 5 == 0)
+                break;
+            else
+            {
+                sumc -= Q.front().second;
+                sterg[Q.front().first] = 0;
+                Q.pop();
+                --nrs;
+            }
+        }
+    }
+    while(!Q.empty()) Q.pop();/// golim coada
+}
+
+void read()
+{
+    scanf("%d%d%d%d%d",&len1,&len2,&len3,&cross1,&cross2);
+
+    prepare();
+    sterge(nr1,sterse1,N-len1);
+    sterge(nr2,sterse2,P-len2);
+    sterge(nr3,sterse3,K-len3);
+    for(int i = 1; i <= 7; ++i)
+    {
+        if(sterse1[i] != 1)
+            bun1[++nrb1] = nr1[i];
+        if(sterse2[i] != 1)
+            bun2[++nrb2] = nr2[i];
+        if(sterse3[i] != 1)
+            bun3[++nrb3] = nr3[i];
+    }
+    if(bun1[1] == bun1[2]&& bun1[1] == 0)
+    {
+        for(int i = 1; i <nrb1; ++i) bun1[i] = bun1[i+1];
+        bun1[nrb1] = 0;
+    }
+    if(bun2[1] == bun2[2] && bun2[1] == 0)
+    {
+        for(int i = 1; i <nrb2; ++i) bun2[i] = bun2[i+1];
+        bun2[nrb2] = 0;
+    }
+    if(bun3[1] == bun3[2] && bun3[1] == 0)
+    {
+        for(int i = 1; i <nrb3; ++i) bun3[i] = bun3[i+1];
+        bun3[nrb3] = 0;
+    }
+}
+int ans[100][100]; /// solutie
+
+void initialize()
+{
+    memset(ans,-1,sizeof(ans));
+    memset(sterse1,0,sizeof(sterse1));
+    memset(sterse2,0,sizeof(sterse2));
+    memset(sterse3,0,sizeof(sterse3));
+    memset(bun1,0,sizeof(bun1));
+    memset(bun2,0,sizeof(bun2));
+    memset(bun3,0,sizeof(bun3));
+    nrb1 = nrb2 = nrb3 = 0;
+}
+
+void print()
+{
+    for(int i = 1; i <= nrb1; ++i)
+        if(bun1[i] == cross1)
+        {
+            c1 = nrb1-i+1; /// coloana primului string
+            break;
+        }
+    for(int i = 1; i <= nrb1; ++i)
+        if(bun1[i] == cross2 && nrb1-i+1 != c1)
+        {
+            c2 = nrb1-i+1; /// coloana al 2 lea string
+            break;
+        }
+    for(int i = 1; i <= nrb2; ++i)
+        if(bun2[i] == cross1)
+        {
+            h1 = nrb2-i+1; /// diferenta de nivel fata de inceputul primului
+            break;
+        }
+    for(int i = 1; i <= nrb3; ++i)
+        if(bun3[i] == cross2)
+        {
+            h2 = nrb3-i+1; /// diferenta de nivel fata de inceputul la al 2 lea
+            break;
+        }
+    int col = 1, lin = max(h1,h2);
+    for(int i = 1; i <= nrb1; ++i)
+        ans[lin][col+i-1] = bun1[nrb1-i+1];
+    int col1,lin1;
+    col1 = c1; lin1 = lin - h1 + 1;
+    for(int i = 1; i <= nrb2; ++i)
+        ans[lin1+i-1][col1] = bun2[nrb2-i+1];
+    col1 = c2; lin1 = lin - h2 + 1;
+    for(int i = 1; i <= nrb3; ++i)
+        ans[lin1+i-1][col1] = bun3[nrb3-i+1];
+
+    for(int i = 1; i <= 20; ++i)
+    {
+        for(int j = 1; j <= 20; ++j)
+            if(ans[i][j] != -1)
+                printf("%d ",ans[i][j]);
+            else
+                printf("  ");
+        printf("\n");
+    }
+    printf("\n\n");
+}
+
+
+int main()
+{
+    freopen("numble.in","r",stdin);
+    int T = 5;
+    scanf("%s%s%s",&a,&b,&c);
+    for(int i = 0; i < strlen(a); ++i)
+        nr1[++N] = a[i] -'0';
+    for(int i = 0; i < strlen(b); ++i)
+        nr2[++P] = b[i] -'0';
+    for(int i = 0; i < strlen(c); ++i)
+        nr3[++K] = c[i] -'0';
+    sort(nr1+1,nr1+N+1);
+    sort(nr2+1,nr2+P+1);
+    sort(nr3+1,nr3+K+1);
+    while(T--)
+    {
+        initialize();
+        read();
+        print();
+    }
+    return 0;
+}

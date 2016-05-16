@@ -1,0 +1,110 @@
+/*
+Gary Ge
+Ward Melville High School
+Intermediate 3
+ACSL Scrabble
+*/
+
+package ACSL;
+
+import java.util.Scanner;
+
+public class ACSLScrabble {
+
+    
+    public int getValue(String in){
+        if(in.equals("A")||in.equals("E")){
+            return 1;
+        }else if(in.equals("D")||in.equals("R")){
+            return 2;
+        }else if(in.equals("B")||in.equals("M")){
+            return 3;
+        }else if(in.equals("V")||in.equals("Y")){
+            return 4;
+        }else if(in.equals("J")||in.equals("X")){
+            return 8;
+        }
+        return 0;
+    }
+    
+    public String[] input(String in){
+        String[] result = new String[4];
+        int index = 0;
+        for(int i = 0; i < in.length(); i++){
+            String sub = in.substring(i, i+1);
+            if(!(sub.equals(" ")||sub.equals(","))){
+                result[index] = sub;
+                index++;
+            }
+        }
+        return result;
+    }
+    
+    public int[] indexes(int pos, String o){
+        int[] result = new int[4];
+        if(o.equals("H")){
+            for(int i = 0; i < 4; i++){
+                result[i] = pos;
+                pos++;
+            }
+        }else{
+            for(int i = 0; i < 4; i++){
+                result[i] = pos;
+                pos += 10;
+            }    
+        }
+        
+        return result;
+        
+    }
+
+    public static void main(String[] args){
+    	Scanner reader = new Scanner(System.in);
+        ACSLScrabble myacsl = new ACSLScrabble();
+        String in = reader.nextLine();
+        String[] letters = myacsl.input(in);
+        while(true){
+            //Perpetually request new location and orientation info
+            in = reader.nextLine();
+            int position;
+            int end = 0;
+            while(!in.substring(end, end+1).equals(",")){
+            	end++;
+            }
+            position = Integer.parseInt(in.substring(0,end));
+            String orientation = in.substring(in.length()-1, in.length());
+            int[] indexes = myacsl.indexes(position, orientation);
+            //Now we have both letters and indexes
+            int wordmultiplyer = 1;
+            int score = 0;
+            //Here we need to check for all the multiples to see what multipliers we'll have
+            for(int i = 0; i < 4; i++){
+                String letter = letters[i];
+                int index = indexes[i];
+                int lettervalue = myacsl.getValue(letter);
+                //lettervalue refers to the value of the letter, index refers to the index on the board
+                int lettermultiplyer = 1;
+                
+                //lettermultiplyer and wordmultiplyer are self-explanatory; now make sure to check for how we change them
+                if(index%3 == 0 && (index/3)%2 == 1){
+                    lettermultiplyer = 2;
+                }else if(index%5 == 0){
+                    lettermultiplyer = 3;
+                }else if(index%7 == 0){
+                    wordmultiplyer = 2;
+                }else if(index%8 == 0){
+                    wordmultiplyer = 3;
+                }
+                
+                int letterscore = lettervalue*lettermultiplyer;
+                score+=letterscore;
+
+                
+            }
+            score*=wordmultiplyer;
+            System.out.println(""+score);
+        }
+
+    }
+}
+    

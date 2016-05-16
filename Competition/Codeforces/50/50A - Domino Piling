@@ -1,0 +1,13 @@
+#include <iostream> 
+
+using namespace std; 
+
+int N, M;
+int area; 
+
+int main(){
+	cin >> N >> M;	
+	area = N * M; 
+	int dom = area / 2; 
+	cout << dom; 
+}

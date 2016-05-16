@@ -1,0 +1,82 @@
+#Daniel Gross
+#4/12/12
+#Int5
+#Enloe High School
+#Lord Potter
+#Program 4: PIP
+
+#input
+eqn = []
+for i in range(5):
+    eqn.append(raw_input(str(i+1)+": "))
+
+#output
+for i in range(5):
+    eq = eqn[i]
+    final = []
+    incr = 0
+    mult = []
+    paren = []
+    arg_list = ""
+    try:
+        for p in range(len(eq)):
+            if eq[p] == "(":
+                q = p
+                while eq[q] != ")":
+                    q += 1
+                    if eq[q] == "(":
+                        r = q
+                        while eq[r] != ")":
+                            r += 1
+                        paren.append((q,r))
+                        q = r+1
+                paren.append((p,q))
+        for p in range(len(paren)):
+            for q in range(paren[p][0],paren[p][1]):
+                if eq[q] == "*":
+                    arg_list += "*"
+                    eq = eq[:q] + str(incr) + eq[q+1:]
+                    incr += 1
+            for q in range(paren[p][0],paren[p][1]):
+                if eq[q] in ("+","-"):
+                    arg_list += eq[q]
+                    eq = eq[:q] + str(incr) + eq[q+1:]
+                    incr += 1
+        for p in range(len(eq)):
+            if eq[p] == "*":
+                arg_list += "*"
+                eq = eq[:p] + str(incr) + eq[p+1:]
+                incr += 1
+        for p in range(len(eq)):
+            if eq[p] in ("+","-"):
+                arg_list += eq[p]
+                eq = eq[:p] + str(incr) + eq[p+1:]
+                incr += 1
+        for e in range(incr):
+            p = 0
+            done = False
+            while not done:
+                if eq[p] == "(" and eq[p+2] == ")":
+                    done = True
+                    eq = eq[:p] + eq[p+1] + eq[p+3:]
+                p += 1
+                if p + 2 >= len(eq):
+                    done = True
+            p = 0
+            while eq[p] != str(e):
+                p += 1
+            first = ""
+            last = ""
+            try:
+                first = final[int(eq[p-1])]
+            except:
+                first = eq[p-1]
+            try:
+                last = final[int(eq[p+1])]
+            except:
+                last = eq[p+1]
+            final.append(str(arg_list[e]+first+last))
+            eq = eq[:p-1] + eq[p] + eq[p+2:]
+        print final[-1]
+    except:
+        print eq

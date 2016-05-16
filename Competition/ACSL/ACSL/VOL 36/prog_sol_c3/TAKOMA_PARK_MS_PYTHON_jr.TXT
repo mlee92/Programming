@@ -1,0 +1,79 @@
+#Dilhan Salgado
+#Takoma Park MS
+#Written in Python
+#Jr-5
+#3/7/14
+
+def fanorona(input_):
+    board = [["e","e","e","e","e"],["e","e","e","e","e"],["e","e","e","e","e"],["e","e","e","e","e"],["e","e","e","e","e"]]
+
+    for x in range(len(input_)):
+        input_[x] = int(input_[x].strip())
+
+    num_white = input_.pop(0)
+    for x in range(num_white):
+        white_piece = input_.pop(0)-1
+        board[(white_piece - (white_piece % 5))//5][white_piece % 5] = "w"
+
+    num_black = input_.pop(0)
+    for x in range(num_black):
+        black_piece = input_.pop(0)-1
+        board[(black_piece - (black_piece % 5))//5][black_piece % 5] = "b"
+    
+    for xpos in range(5):
+        xposbackup = xpos
+        for ypos in range(5):
+            xpos = xposbackup
+            letter = board[ypos][xpos]
+            if letter == "w":
+                xposbackup = xpos
+                yposbackup = ypos
+                for move in [[-1,0],[0,-1],[0,1],[1,0]]:
+                    xpos = move[0] + xposbackup
+                    ypos = move[1] + yposbackup
+                    if xpos < 5 and ypos < 5 and xpos >= 0 and ypos >= 0:
+                        new_letter = board[ypos][xpos]
+
+                        if new_letter == "e":
+                            output = ""
+                            xpos += move[0]
+                            ypos += move[1]
+                            if xpos < 5 and ypos < 5:
+                                new_letter = board[ypos][xpos]
+                                while new_letter == "b" and xpos >= 0 and ypos >= 0:
+                                    output += str(5  * ypos + xpos + 1)
+                                    output += ", "
+                                    xpos += move[0]
+                                    ypos += move[1]
+                                    if xpos >= 5 or ypos >= 5:
+                                        break
+                                    new_letter = board[ypos][xpos]
+                                if output != "":
+                                    output = list(output)
+                                    output.pop()
+                                    output.pop()
+                                    return "".join(output)
+                                
+                        elif new_letter == "b" and board[ypos - 2 * move[1]][xpos - 2 * move[0]] == "e":
+                            output = ""
+                            if xpos < 5 and ypos < 5:
+                                new_letter = board[ypos][xpos]
+                                while new_letter == "b" and xpos >= 0 and ypos >= 0:
+                                    output += str(5  * ypos + xpos + 1)
+                                    output += ", "
+                                    xpos += move[0]
+                                    ypos += move[1]
+                                    if xpos >= 5 or ypos >= 5:
+                                        break
+                                    new_letter = board[ypos][xpos]
+                                if output != "":
+                                    output = list(output)
+                                    output.pop()
+                                    output.pop()
+                                    return "".join(output)
+    return "NONE"
+    
+for x in range(1,6):
+    input_ = input(str(x) +". ")
+    print(str(x) + ". " + str(fanorona(input_.split(","))))
+input("Press Enter to Exit: ")    

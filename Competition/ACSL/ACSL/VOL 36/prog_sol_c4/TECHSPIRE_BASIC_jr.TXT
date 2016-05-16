@@ -1,0 +1,126 @@
+' Saket Bikmal
+' Grade 8
+' Junior Division
+' TechSPIRE
+
+[start]
+
+
+[NextInput]
+
+input "Enter Input:"; str$
+
+Dim inputNum(7)
+numLen = 0
+outNum$ = ""
+numSum = 0
+
+' Parse input characters into an array
+for a = 1 to 7
+    inputNum(a) = val(mid$(str$, a, 1))
+next a
+
+' Get the length to use
+let numLen = val(mid$(str$, 10, 1))
+
+
+' Sort the input character array in non-decreasing order
+inputNum = BubbleSort(inputNum)
+
+
+' Simple case where consecutive input numbers meet the condition
+
+    for i = 1 to numLen
+        numSum = numSum + inputNum(i)
+        outNum$ = outNum$ + str$(inputNum(i))
+    next i
+
+    if (numSum mod 5) = 0 then
+        print ""        
+        print outNum$
+        print ""
+        goto [NextInput]
+    end if
+
+
+' NOT Simple case where consecutive numbers meet the condition
+
+c = 0
+divBy5 = 0
+numSum = 0
+outNum$ = ""
+
+    for c = 1 to numLen
+
+        numSum = 0
+        outNum$ = ""
+        divBy5 = 0
+
+'       Calculate relevant numSum
+
+        ' Part 1
+        for i = 1 to (numLen - c)
+            numSum = numSum + inputNum(i)
+            outNum$ = outNum$ + str$(inputNum(i))
+        next i
+
+        ' Part 2
+        for j = (numLen - c + 2) to numLen
+            numSum = numSum + inputNum(j)
+            outNum$ = outNum$ + str$(inputNum(j))
+        next j
+
+        ' Part 3
+        for k = (numLen + 1) to 7
+
+            numSum = numSum + (inputNum(k))
+            outNum$ = outNum$ + str$(inputNum(k))
+
+'           Is it Divisible 5?
+
+            if (numSum mod 5) = 0 then
+                print ""
+                print outNum$
+                print ""
+                divBy5 = 1
+                goto [NextInput]
+            end if
+
+        next k
+
+    next c
+
+    If divBy5 = 0 then
+        print ""
+        print "NONE"
+        print ""
+    end if
+
+    goto [NextInput]
+
+
+
+FUNCTION BubbleSort(inputNum)
+
+do
+    swapped = 0
+    for i = 2 to  7
+
+'       /* if this pair is out of order */
+       if inputNum(i-1) <  inputNum(i) then
+
+'         /* swap them and remember something changed */
+            b = inputNum(i-1)
+            inputNum(i-1) = inputNum(i)
+            inputNum(i) = b
+            swapped = 1
+
+       end if
+
+     next i
+
+loop until swapped = 0
+
+End Function
+
+

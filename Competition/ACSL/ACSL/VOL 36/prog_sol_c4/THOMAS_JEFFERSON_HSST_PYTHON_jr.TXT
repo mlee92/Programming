@@ -1,0 +1,115 @@
+#Nipun Mallipeddi
+#Thomas Jefferson High School for Science and Technology
+#Junior Division
+#Contest #3 2013-2014
+#ACSL FANORONA
+#Python version 3.2.3
+def bpiecesaround(a,blacklist,total):
+    returner=0
+    if (a+2 in blacklist) and (a+1 not in total) and (a%5!=0 and (a+1)%5!=0):
+        returner+=1
+    elif (a-2 in blacklist) and (a-1 not in total) and (a%5!=1 and (a-1)%5!=1):
+        returner-=1
+    elif (a-10 in blacklist) and (a-5 not in total):
+        returner-=5
+    elif (a+10 in blacklist) and (a+5 not in total):
+        returner+=5
+    return returner
+
+def bpiecesnext(a,blacklist,total):
+    returner=0
+    board=list(range(1, 25))
+    if (a+1 in blacklist) and (a-1 not in total) and (a%5!=0) and (a-1) in board:
+        returner+=1
+    elif (a-1 in blacklist) and (a+1 not in total) and ((a-1)%5!=0) and (a+1)in board:
+        returner-=1
+    elif (a-5 in blacklist) and (a+5 not in total) and (a+5)in board:
+        returner-=5
+    elif (a+5 in blacklist) and (a-5 not in total) and (a-5) in board:
+        returner+=5
+    return returner
+
+    
+def formatinput(j):
+    global white,whitepieces
+    for x in range(len(j)):
+        j[x]=int(j[x])
+
+    white=j[0]
+    whitepieces=[]
+    j.pop(0)
+    for z in range(white):
+        whitepieces.append(j[z])
+        j[z]=""
+    for tr in range(white):
+        j.remove("")
+    j.pop(0)
+    return j
+
+
+for x in range(5):#MAIN PROGRAM STARTS HERE
+        final=[]
+        j=input('Enter Input:')
+        j=j.strip()
+        j=j.replace(" ","")
+        j=j.upper()
+        j=j.split(',')
+        
+        blackpieces=formatinput(j)
+
+        everything=whitepieces+blackpieces
+        solh=0
+        sol=0
+        for z in whitepieces:
+            if bpiecesnext(z,blackpieces,everything)!=0:
+                solh=bpiecesnext(z,blackpieces,everything)
+                sol=z+solh
+                break
+            elif bpiecesaround(z,blackpieces,everything)!=0:
+                solh=bpiecesaround(z,blackpieces,everything)
+                sol=solh+z+solh
+                break
+                
+
+        final.append(sol)
+        if solh !=0:
+            for qwe in range(0,6):
+                if solh==1 and (sol+(solh*qwe))%5==0 and sol+(solh*qwe) in blackpieces:
+                    final.append(sol+(solh*qwe))
+                    break
+                elif solh==-1 and (sol+(solh*qwe))%5==0:
+                    break
+                elif sol+(solh*qwe) in blackpieces:
+                    final.append(sol+(solh*qwe))
+                else:
+                    break
+        else:
+            print ("NONE")
+            continue
+        final=list(set(final))
+        print (','.join(str(x) for x in final))
+                
+            
+
+       
+
+        
+        
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+        

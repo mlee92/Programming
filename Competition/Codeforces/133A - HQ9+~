@@ -1,0 +1,21 @@
+#include <iostream>
+
+using namespace std;
+
+bool valid(string str){
+	bool ret = false;
+	int i = 0;
+	while(!ret && i < str.size()){
+		char c = str[i];
+		bool b = (c == 'H') || (c == 'Q') || (c == '9');
+		ret = ret || b;		
+		i++;			
+	}
+	return ret;
+}
+
+int main(){
+    string str;
+    getline(cin, str);
+	cout << valid(str) << endl;
+}

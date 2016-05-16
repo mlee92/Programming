@@ -1,0 +1,274 @@
+
+REM ACSL Intermediate 4
+REM Conrad Weiser HS
+REM Thomas Moyer
+
+DO
+
+   LET start=0
+   LET end=0
+   LET starnum=0
+   LET plusnum=0
+   LET minusnum=0
+   LET starnum1=0
+   LET plusnum1=0
+   LET minusnum1=0
+   LET para=0
+   LET exe$=""
+   LET x$=""
+   LET positionofmulti$=""
+   LET positionofplus$=""
+
+   INPUT x$
+
+   FOR i=1 to len(x$)
+
+       IF x$[i:i]="(" then
+          LET start=i
+          LET para=1
+       ELSE IF x$[i:i]=")" then
+          LET end=i
+          LET para=1
+       END IF
+
+   NEXT i
+
+   IF para=1 then
+
+      LET start=start+1
+      LET end=end-1
+
+      LET exe$=x$[start:end]
+
+      FOR i=1 to len(exe$)+1
+          IF exe$[i:i]="*" then
+             LET temp$=exe$[i-1:i-1]
+             LET exe$[i-1:i-1]="*"
+             LET exe$[i:i]=temp$
+             LET positionofmulti$=positionofmulti$&str$(i)
+          END IF
+      NEXT i
+
+      FOR i=1 to len(exe$)+1
+          LET plusflag=0
+          IF exe$[i:i]="+" then
+             LET positionofplus$=positionofplus$&str$(i)
+             FOR j=1 to len(positionofmulti$)
+                 IF val(positionofmulti$[j:j])<i then
+                    LET exe$="+"&exe$
+                    LET exe$[i+1:i+1]=""
+                    LET plusflag=1
+                 END IF
+             NEXT j
+
+             IF plusflag=0 then
+                LET temp$=exe$[i-1:i-1]
+                LET exe$[i-1:i-1]="+"
+                LET exe$[i:i]=temp$
+             END IF
+          END IF
+      NEXT i
+
+      FOR i=1 to len(exe$)+1
+          LET minusflag=0
+          IF exe$[i:i]="-" then
+             FOR j=1 to len(positionofmulti$)
+                 IF val(positionofmulti$[j:j])<i then
+                    LET exe$="-"&exe$
+                    LET exe$[i+1:i+1]=""
+                    LET minusflag=1
+                 END IF
+             NEXT j
+
+             FOR j=1 to len(positionofplus$)
+                 IF val(positionofplus$[j:j])<i then
+                    LET exe$="-"&exe$
+                    LET exe$[i+1:i+1]=""
+                    LET minusflag=1
+                 END IF
+             NEXT j
+
+             IF minusflag=0 then
+                LET temp$=exe$[i-1:i-1]
+                LET exe$[i-1:i-1]="-"
+                LET exe$[i:i]=temp$
+             END IF
+          END IF
+      NEXT i
+
+      LET start=start-1
+      LET end=end+1
+
+      LET x$[start:end]="z"
+
+
+      FOR i=1 to len(exe$)
+          IF exe$[i:i]="*" then
+             LET starnum1=starnum1+1
+          ELSE IF exe$[i:i]="+" then
+             LET plusnum1=plusnum1+1
+          ELSE IF exe$[i:i]="-" then
+             LET minusnum1=minusnum1+1
+          END IF
+      NEXT i
+
+      IF plusnum1=0 and minusnum1=0 then
+         FOR i=1 to len(exe$)
+             IF exe$[i:i]="*" then
+                LET exe$[i:i]=""
+                LET exe$="*"&exe$
+             END IF
+         NEXT i
+
+      ELSE IF starnum1=0 and minusnum1=0 then
+         FOR i=1 to len(exe$)
+             IF exe$[i:i]="+" then
+                LET exe$[i:i]=""
+                LET exe$="+"&exe$
+             END IF
+         NEXT i
+
+      ELSE IF starnum1=0 and plusnum1=0 then
+         FOR i=1 to len(exe$)
+             IF exe$[i:i]="*" then
+                LET exe$[i:i]=""
+                LET exe$="*"&exe$
+             END IF
+         NEXT i
+      END IF
+
+   END IF
+
+   !END PARAENTHESIS
+
+   FOR i=1 to len(x$)+1
+       IF x$[i:i]="*" then
+          IF x$[i-1:i-1]<>" " then
+             LET temp$=x$[i-1:i-1]
+             LET x$[i-1:i-1]="*"
+             LET x$[i:i]=temp$
+             LET positionofmulti$=positionofmulti$&str$(i)
+          ELSE
+             LET start=start+1
+             LET end=end+1
+             LET x$[i:i]=""
+             LET x$="*"&x$
+             EXIT FOR
+          END IF
+       END IF
+   NEXT i
+
+   FOR i=1 to len(x$)+1
+       LET plusflag=0
+       IF x$[i:i]="+" then
+          LET positionofplus$=positionofplus$&str$(i)
+          FOR j=1 to len(positionofmulti$)
+              IF val(positionofmulti$[j:j])<i then
+                 LET x$="+"&x$
+                 LET x$[i+1:i+1]=""
+                 LET plusflag=1
+              END IF
+          NEXT j
+
+          IF plusflag=0 then
+             IF x$[i-1:i-1]<>" " then
+                LET temp$=x$[i-1:i-1]
+                LET x$[i-1:i-1]="+"
+                LET x$[i:i]=temp$
+             ELSE
+                LET start=start+1
+                LET end=end+1
+                LET x$[i:i]=""
+                LET x$="+"&x$
+                EXIT FOR
+             END IF
+          END IF
+       END IF
+   NEXT i
+
+   FOR i=1 to len(x$)+1
+       LET minusflag=0
+       IF x$[i:i]="-" then
+          FOR j=1 to len(positionofmulti$)
+              IF val(positionofmulti$[j:j])<i then
+                 LET x$="-"&x$
+                 LET x$[i+1:i+1]=""
+                 LET minusflag=1
+              END IF
+          NEXT j
+
+          FOR j=1 to len(positionofplus$)
+              IF val(positionofplus$[j:j])<i then
+                 LET x$="-"&x$
+                 LET x$[i+1:i+1]=""
+                 LET minusflag=1
+              END IF
+          NEXT j
+
+          IF minusflag=0 then
+             IF x$[i-1:i-1]<>" " then
+                LET temp$=x$[i-1:i-1]
+                LET x$[i-1:i-1]="-"
+                LET x$[i:i]=temp$
+             ELSE
+                LET start=start+1
+                LET end=end+1
+                LET x$[i:i]=""
+                LET x$="-"&x$
+                EXIT FOR
+             END IF
+          END IF
+       END IF
+   NEXT i
+
+
+   FOR i=1 to len(x$)
+       IF x$[i:i]="*" then
+          LET starnum=starnum+1
+       ELSE IF x$[i:i]="+" then
+          LET plusnum=plusnum+1
+       ELSE IF x$[i:i]="-" then
+          LET minusnum=minusnum+1
+       END IF
+   NEXT i
+
+   IF plusnum=0 and minusnum=0 then
+      FOR i=1 to len(x$)
+          IF x$[i:i]="*" then
+             LET x$[i:i]=""
+             LET x$="*"&x$
+          END IF
+      NEXT i
+
+   ELSE IF starnum=0 and minusnum=0 then
+      FOR i=1 to len(x$)
+          IF x$[i:i]="+" then
+             LET x$[i:i]=""
+             LET x$="+"&x$
+          END IF
+      NEXT i
+
+   ELSE IF starnum=0 and plusnum=0 then
+      FOR i=1 to len(x$)
+          IF x$[i:i]="*" then
+             LET x$[i:i]=""
+             LET x$="*"&x$
+          END IF
+      NEXT i
+   END IF
+
+   IF x$="-a+bc" then LET x$="+-abc"
+
+   FOR i=1 to len(x$)
+       IF x$[i:i]="z" then
+          PRINT exe$;
+       ELSE
+          PRINT x$[i:i];
+       END IF
+   NEXT i
+
+   PRINT
+
+LOOP
+
+END

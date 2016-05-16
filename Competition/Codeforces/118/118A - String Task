@@ -1,0 +1,53 @@
+#include <iostream>
+#include <cctype>
+#include <string>
+
+using namespace std; 
+
+string vowels = "aeiouyAEIOUY";
+string consonants = "bcdfghjklmnpqrstvwxz";
+string input; 
+string output; 
+
+bool isVowel(char c){
+	int  i = 0;
+	bool vowel = false;	
+	while(!vowel && i < vowels.size()){
+		if(c == vowels[i]) { vowel = true; }
+		i++;
+	}
+	return vowel;
+}
+
+void deleteVowels(){
+	for(int i = 0; i < input.size(); i++){
+		if(!isVowel(input[i])) {  output += tolower(input[i]); }
+	}
+}
+
+bool isConsonant(char c){
+	int i = 0; 
+	bool cons = false;	
+	while(!cons && i < consonants.size()){
+		if(c == consonants[i]) { cons = true; }
+		i++;
+	}
+	return cons;
+}
+
+void finalize(){
+	string ret;
+	for(int i = 0; i < output.size(); i++){
+		char c = output[i];
+		if(isConsonant(c)) { ret += "."; } 
+		ret += c;		
+	}
+	output = ret; 
+}
+
+int main(){
+	getline(cin, input);
+	deleteVowels();
+	finalize();
+	cout << output;
+}

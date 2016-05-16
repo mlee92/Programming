@@ -1,0 +1,325 @@
+
+' Saket Bikmal
+' Grade 8
+' Junior Division
+' ACSL Contest #3
+' TechSPIRE
+
+[start]
+
+l = 1
+DO
+
+input "Input String: "; inputstr$
+
+'print "inputstr = "; inputstr$
+
+dim Gameboard$(25, 25)
+dim Positions$(len(inputstr$))
+dim Positions(len(inputstr$))
+
+p = 1
+inputposition$=""
+
+for i = 1 to len(inputstr$)
+
+    if mid$(inputstr$, i, 1) <> "," AND mid$(inputstr$, i, 1) <> " " then
+        inputposition$ = inputposition$ + mid$(inputstr$, i, 1)
+    end if
+
+    If mid$(inputstr$, i+1, 1) = "," then
+        Positions$(p) = inputposition$
+        inputposition$ = ""
+        Positions(p) = val(Positions$(p))
+ '       print "Positions number: "; Positions(p)
+        p = p + 1
+    end if
+
+    If i = len(inputstr$)-1 then
+        Positions$(p) = mid$(inputstr$, len(inputstr$) - 1, 2)
+        Positions(p) = val(Positions$(p))
+ '       print "Last Positions number: "; Positions(p)
+    End if
+
+next i
+
+
+'for m = 1 to len(inputstr$)
+
+'    print "P "; Positions(m)
+
+'next m
+
+let numofwhites = Positions(1)
+let numofblacks = Positions(numofwhites + 2)
+
+'print "whites "; numofwhites
+'print "blacks "; numofblacks
+
+' Loading the Gameboard$
+' Whites
+for r = 2 to Positions(1)+1
+'    print "loading whites"
+
+    if Positions(r) = 25 OR Positions(r) = 20 OR Positions(r) = 15 OR Positions(r) = 10 OR Positions(r) = 5 then
+'        print "last white position: "; Positions(r)
+        let row = int(Positions(r)/5)
+        let column = 5
+    else
+        let row = int(Positions(r)/5) + 1
+        let column = Positions(r) mod 5
+    end if
+
+    Gameboard$(row, column) = "W"
+
+next r
+
+'Blacks
+for b = Positions(1)+3 to Positions(1) + 2 + Positions(Positions(1) + 2)
+'     print "loading blacks"
+
+
+    if Positions(b) = 25 OR Positions(b) = 20 OR Positions(b) = 15 OR Positions(b) = 10 OR Positions(b) = 5 then
+'        print "last black position: "; Positions(b)
+        let row = int(Positions(b)/5)
+        let column = 5
+    else
+        let row = int(Positions(b)/5) + 1
+        let column = Positions(b) mod 5
+    end if
+
+    Gameboard$(row, column) = "B"
+
+next b
+
+
+'for i = 1 to 5
+
+'    for j = 1 to 5
+
+'       print "i = "; i; " j = " ; j; " Piece = "; Gameboard$(i,j)
+
+'    next j
+
+'next i
+
+
+
+' Check for Towards cases
+out$ = ""
+notowards = 0
+for r = 1 to 5
+
+    for c = 1 to 5
+
+        If Gameboard$(r, c) = "W" then
+
+            ' right
+            If c < 4 AND Gameboard$(r, c+1) = "" then
+
+'               print "right"; " c= "; c ; " r = "; r
+
+                notowards = 0
+               if Gameboard$(r, c+2) = "B" then
+'               print "right 1"
+                    i = c+2
+
+'                    print "Captured = "; r; ", "; i
+'                    print (r-1)*5 + (i)
+                    let out$ = str$((r-1)*5 + (i))
+                   doneloop = 0
+                 do while i < 5
+ '              print "right 2 loop"
+                    i = i + 1
+
+                    If Gameboard$(r, i) = "B" then
+
+'                        print "Captured = "; r; ", "; i
+'                        print (r-1)*5 + (i)
+                        let out$ = out$ + ", " + str$((r-1)*5 + (i))
+
+                     else
+
+                        doneloop = 1
+'                        notowards = 1
+                    end if
+
+                    if doneloop = 1 then
+                        exit do
+                    end if
+
+                loop
+
+'                else
+'                    let notowards = 1
+                end if
+
+           end if
+           print out$
+
+            ' left
+            output$ = ""
+            If c > 2 and Gameboard$(r, c-1) = "" then
+
+'                Print "Entering Left"
+
+                If Gameboard$(r, c-2) = "B" then
+
+                i = c-2
+
+                do while i > 0
+
+'                    print "Captured = "; r; ", "; i
+'                    print (r-1)*5 + (i)
+                    output$ = output$; ", "; str$((r-1)*5 + i)
+                    i = i - 1
+
+                    If Gameboard$(r, i) = "B" then
+
+'                        print "Captured = "; r; ", "; i
+'                        print (r-1)*5 + (i)
+                         output$ = output$ + str$((r-1)*5 + (i))
+                    end if
+
+                loop
+                print output$
+'                    print reverse of output$
+            else
+
+                let notowards = 1
+
+            end if
+
+ '           else
+
+ '               let notowards = 1
+
+            end if
+
+        end if
+
+    next c
+
+next r
+
+
+
+
+
+'  print "no towards= "; notowards
+
+
+' Check for Away cases
+arout$ = ""
+alout$ = ""
+noaway = 0
+for r = 1 to 5
+
+    for c = 1 to 5
+
+        If Gameboard$(r, c) = "W" then
+
+            If Gameboard$(r, c-1) = "B" then
+
+                 If Gameboard$(r, c+1) = "" then
+
+'                    print "Captured = "; r; ", "; c-1
+'                    print (r-1)*5 + (c-1)
+                     arout$ = arout$ + ", " + str$((r-1)*5 + (c-1))
+                  else
+
+                    let noaway = 1
+                 end if
+
+ '           else
+
+ '               let noaway = 1
+            end if
+            print arout$
+
+            If Gameboard$(r, c+1) = "B" then
+
+                 If Gameboard$(r, c-1) = "" then
+
+'                    print "Captured = "; r; ", "; c+1
+'                    print (r-1)*5 + (c+1)
+                     alout$ = alout$ + str$((r-1)*5 + (c+1))
+
+                    If c+1 < 5 and Gameboard$(r, c+2) = "B" then
+
+'                        print "Captured = "; r; ", "; c+2
+'                        print (r-1)*5 + (c+2)
+                         alout$ = alout$ + ", " + str$((r-1)*5 + (c+2))
+                    else
+
+                        let noaway = 1
+                    End if
+
+                    If c+2 < 5 and Gameboard$(r, c+3) = "B" then
+
+'                        print "Captured = "; r; ", "; c+3
+'                        print (r-1)*5 + (c+3)
+                         alout$ = alout$ + ", " + str$((r-1)*5 + (c+3))
+                    else
+
+                        let noaway = 1
+                    End if
+
+'                 else
+
+'                    let noaway = 1
+                 end if
+
+                 print alout$
+
+            end if
+
+            If Gameboard$(r+1, c) = "B" then
+
+                 If Gameboard$(r-1, c) = "" then
+
+'                    print "Captured = "; r+1; ", "; c
+                    print (r)*5 + (c)
+                 else
+
+                    let noaway = 1
+                 end if
+
+            end if
+
+            If Gameboard$(r-1, c) = "B" then
+
+                 If Gameboard$(r+1, c) = "" then
+
+'                    print "Captured = "; r-1; ", "; c
+                    print (r-2)*5 + (c)
+                 else
+
+                    let noaway = 1
+                 end if
+'            else
+
+'                let noaway = 1
+
+            end if
+
+         end if
+
+    next c
+
+next r
+
+
+If notowards = 1 AND noaway = 1 then
+    print "NONE"
+End if
+
+l = l+1
+LOOP UNTIL l = 10
+END
+
+
+
+
+
+

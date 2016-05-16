@@ -1,0 +1,19 @@
+#Intermediate 3
+#St.Stanislav Institution
+#Author: Rok Lekse
+import re
+res=[]
+for k in range(5):
+    a=raw_input(str(k+1)+'. ').replace('*','.').split(', ')
+    mtch=[]
+    for i in range(2,len(a)):
+        m=re.match(a[0],a[i])
+        if m:
+            mtch.append(m.group())
+    if len(mtch)>0:
+        res.append(', '.join(mtch))
+    else:
+        res.append('NONE')
+print '\n'
+for i in range(len(res)):
+    print str(i+1)+'.',res[i]

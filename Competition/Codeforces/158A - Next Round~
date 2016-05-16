@@ -1,0 +1,27 @@
+#include <iostream>
+#include <vector>
+using namespace std; 
+
+vector<int> scores;
+int N, K;
+
+void read(){
+	for(int i = 0; i < N; i++){
+		int score;
+		cin >> score; 
+		scores.push_back(score);
+	}
+}
+
+int main(){
+	cin >> N >> K;
+	read();
+	int c;
+	int min = scores[k - 1];
+	for(int i  = 0; i < N; i++){
+		if(scores[i] > 0 && scores[i] >= min){
+			c++;		
+		}
+	}
+	cout << c << endl;
+}

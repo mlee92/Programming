@@ -1,0 +1,72 @@
+/* Elizabeth Hu
+*  Thomas Jefferson High School for Science and Technology
+*  Junior Division
+*  Contest #1 2013-2014
+*  ACSL_Scrabble
+*/
+   import java.util.*; 
+   public class ACSL_Scrabble {
+   
+      public static void main(String[] args) {
+         Scanner infile = new Scanner(System.in);
+         String[] word = null;
+         while( word == null || word.length != 4){ 
+            System.out.print("Enter a four letter word with each letter separated by a comma and a space (e.g. J, A, V, A): ");
+            String s = infile.nextLine();
+            s = s.replace(" ", "");
+            s = s.toUpperCase();
+            word = s.split(",");
+         }
+         for (int i = 1; i <= 5; i++){
+            int start = -1;
+            while (start > 37 || start < 1){
+               System.out.print("Enter starting location (1-37): ");
+               start = Integer.parseInt(infile.nextLine());
+            }
+            boolean tripleword = false, doubleword = false;
+            int score = 0;
+            int totalscore = 0;
+            for(int j = 0; j < word.length; j++){
+               boolean lettermultiplier = false;
+               score = getRawScore(word[j]);
+               int n = start + j;
+               if (n % 3 == 0 && ((n/3) % 2 == 1)){   // Double Letter
+                  totalscore += score * 2;
+                  lettermultiplier = true;
+               }
+               else if (n % 5 == 0){						// Triple Letter
+                  totalscore += score * 3;
+                  lettermultiplier = true;
+               }
+               else 
+                  totalscore += score;
+               if (!lettermultiplier){				
+                  if (n % 8 == 0)							// Triple Word
+                     tripleword = true;
+                  else if (n % 7 == 0)						// Double Word
+                     doubleword = true;
+               }	
+            }
+            if (tripleword)
+               totalscore = totalscore * 3;
+            else if (doubleword)
+               totalscore = totalscore * 2;
+            System.out.println("Total Score: " + totalscore);    
+         }
+      }
+      //calculate the raw score for a letter
+      public static int getRawScore (String s){
+         int score = 0;
+         if (s.equals("A") || s.equals("E")) 
+            score = 1;
+         else if (s.equals("D") || s.equals("R")) 
+            score = 2; 
+         else if (s.equals("B") || s.equals("M")) 
+            score = 3; 
+         else if (s.equals("V") || s.equals("Y")) 
+            score = 4; 
+         else if (s.equals("J") || s.equals("X")) 
+            score = 8;    
+         return score;
+      }
+   }

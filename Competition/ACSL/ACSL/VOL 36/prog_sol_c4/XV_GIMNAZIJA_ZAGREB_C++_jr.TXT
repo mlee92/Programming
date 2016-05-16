@@ -1,0 +1,60 @@
+// Adrian Beker
+// XV. gimnazija Zagreb
+// Junior 5
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+#include <vector>
+#include <string>
+using namespace std;
+
+int n, k, maks;
+char s[10];
+vector <string> sol;
+
+void load() {
+	scanf("%s%d", s, &k);
+}
+
+void rec(int idx, string curr, int sum) {
+	if (curr.size() == k) {
+		if (!(sum % 5)) { 
+			if (sum > maks) {
+				sol.clear();
+				maks = sum;
+			}
+			if (sum >= maks) 
+				sol.push_back(curr);
+		}
+		return;
+	}
+	if (idx == n) return;
+	rec(idx + 1, curr + s[idx], sum + s[idx] - '0');
+	rec(idx + 1, curr, sum); 	
+}
+
+void solve() {
+	sol.clear();
+	maks = 0;
+	n = strlen(s);
+	sort(s, s + n);
+	reverse(s, s + n);
+	rec(0, "", 0);
+	if (sol.empty()) puts("NONE");
+	else {
+		sort(sol.begin(), sol.end());
+		sol.resize(unique(sol.begin(), sol.end()) - sol.begin());
+		reverse(sol.begin(), sol.end());
+		for (int i = 0; i < sol.size(); i++) 
+			puts(sol[i].c_str());
+	}
+}
+
+int main() {
+	for (int i = 0; i < 5; i++) {
+		load();
+		solve();
+	}
+	return 0;
+}
+

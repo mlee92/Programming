@@ -1,0 +1,94 @@
+{
+  Praba Shan
+  Woburn Collegiate Institute
+  ACSL 2013-2014 Contest 1
+  Intermediate Division
+  Program: ACSL Scrabble
+}
+
+{
+
+Please run the program in Pascal fpc 2.6.2, and please input the data on individual lines.
+
+e.g. 
+
+J
+A
+V
+A
+1
+V
+2
+H
+6
+V
+12
+H
+21
+H
+
+}
+
+var
+  letter: array[1..4] of char;
+  point: array[1..4] of integer;
+  pos: array[1..4] of integer;
+  doubleword,tripleword :boolean;
+  c,j,i,total:integer;
+  direct:char;
+begin
+  for c:=1 to 4 do
+  begin
+    readln(letter[c]);
+    if (letter[c] = 'A') or (letter[c] = 'E') then
+      point[c]:=1
+    else if (letter[c] = 'D') or (letter[c] ='R') then
+      point[c]:=2
+    else if (letter[c] = 'B') or (letter[c] ='M') then
+      point[c]:=3
+    else if (letter[c] = 'V') or (letter[c] ='Y') then
+      point[c]:=4
+    else if (letter[c] = 'J') or (letter[c] ='X') then
+      point[c]:=8
+  end;
+  for i:= 1 to 5 do
+  begin
+    readln(pos[1]);
+    readln(direct);
+    if direct = 'V' then
+    begin
+      pos[2]:= pos[1] + 10;
+      pos[3]:= pos[2] + 10;
+      pos[4]:= pos[3] + 10;
+    end;
+    if direct = 'H' then
+    begin
+      pos[2]:= pos[1] + 1;
+      pos[3]:= pos[2] + 1;
+      pos[4]:= pos[3] + 1;
+    end;
+    doubleword:= False;
+    tripleword:= False;
+    total:= 0;
+    for j:= 1 to 4 do
+    begin
+      if (pos[j] = 3) or (pos[j] = 9) or (pos[j] = 15) or (pos[j] = 21) or (pos[j] = 27) or (pos[j] = 33) or (pos[j] = 39) then
+        total:= total + point[j] * 2
+      else if (pos[j] = 5) or (pos[j] = 10) or (pos[j] = 20) or (pos[j] = 25) or (pos[j] = 30) or (pos[j] = 35) or (pos[j] = 40) then
+        total:= total + point[j] * 3
+      else
+        total:= total + point[j];
+      if (pos[j] = 7) or (pos[j] = 14) or (pos[j] = 28) then
+        doubleword:= True;
+      if (pos[j] = 8) or (pos[j] = 16) or (pos[j] = 24) or (pos[j] = 32) then
+        tripleword:= True;
+    end;
+   if (doubleword = True) then
+     writeln(total * 2)
+   else if (tripleword = True) then
+     writeln(total * 3)
+   else
+     writeln(total);
+  end;
+  readln;
+end.

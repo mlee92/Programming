@@ -1,0 +1,119 @@
+//ACSL #3
+//Corbett Rider
+//Elizabethtown Area High School
+//Intermediate-3
+
+package acsl;
+
+import java.util.Scanner;
+
+public class ACSL {
+
+	public enum Piece{none, black, white}
+	
+	public static void main(String[] args) {
+
+            for(int loop=0;loop<5;loop++){
+            
+		Piece[] board = new Piece[25];
+		
+		for(int i=0;i<board.length;i++)
+			board[i]=Piece.none;
+		
+		Scanner in = new Scanner(System.in);
+		
+		System.out.print("Number of white pieces: ");
+		int whites = in.nextInt();
+		for(int i=0;i<whites;i++){
+			System.out.printf("Position %d: ",i+1);
+			int place = in.nextInt();
+			board[place-1]=Piece.white;
+		}
+		
+		System.out.print("\nNumber of black pieces: ");
+		int blacks = in.nextInt();
+		for(int i=0;i<blacks;i++){
+			System.out.printf("Position %d: ",i+1);
+			int place = in.nextInt();
+			board[place-1]=Piece.black;
+		}
+		
+                int[] direction = {1,-1,5,-5,4,-4,6,-6};
+                
+                boolean none=true;
+                System.out.print("\nPiece taken: \n");
+                
+		for(int i=0;i<board.length;i++)
+                    if(board[i]==Piece.white){
+                        int j=0;
+                        for(;j<2;j++){
+                            if(onSameLine(i,i+direction[j]) && board[i+direction[j]]==Piece.none){
+                                for(int k=2;onSameLine(i,i+direction[j]*k) && board[i+direction[j]*k]==Piece.black;k++){
+                                    System.out.printf("Move %d to %d to capture %d%n",(i+1),(1+i+direction[j]),(1+i+direction[j]*k));
+                                    none=false;
+                                }
+                                for(int k=-1;onSameLine(i,i+direction[j]*k) && board[i+direction[j]*k]==Piece.black;k--){
+                                    System.out.printf("Move %d to %d to capture %d%n",(i+1),(1+i+direction[j]),(1+i+direction[j]*k));
+                                    none=false;
+                                }
+                            }
+                        }
+                        for(;j<4;j++){
+                            if(isBetween(i+direction[j],-1,25) && board[i+direction[j]]==Piece.none){
+                                for(int k=2;isBetween(i+direction[j]*k,-1,25) && board[i+direction[j]*k]==Piece.black;k++){
+                                    System.out.printf("Move %d to %d to capture %d%n",(i+1),(1+i+direction[j]),(1+i+direction[j]*k));
+                                    none=false;
+                                }
+                                for(int k=-1;isBetween(i+direction[j]*k,-1,25) && board[i+direction[j]*k]==Piece.black;k--){
+                                    System.out.printf("Move %d to %d to capture %d%n",(i+1),(1+i+direction[j]),(1+i+direction[j]*k));
+                                    none=false;
+                                }
+                            }
+                        }
+                        if(i%4==0){
+                            for(j=4;j<6;j++){
+                                if(isBetween(i+direction[j],-1,25) && board[i+direction[j]]==Piece.none){
+                                    for(int k=2;isBetween(i+direction[j]*k,-1,25) && board[i+direction[j]*k]==Piece.black;k++){
+                                        System.out.printf("Move %d to %d to capture %d%n",(i+1),(1+i+direction[j]),(1+i+direction[j]*k));
+                                        none=false;
+                                    }
+                                    for(int k=-1;isBetween(i+direction[j]*k,-1,25) && board[i+direction[j]*k]==Piece.black;k--){
+                                        System.out.printf("Move %d to %d to capture %d%n",(i+1),(1+i+direction[j]),(1+i+direction[j]*k));
+                                        none=false;
+                                    }
+                                }
+                            }
+                        }
+                        if(i%6==0){
+                            for(j=6;j<8;j++){
+                                if(isBetween(i+direction[j],-1,25) && board[i+direction[j]]==Piece.none){
+                                    for(int k=2;isBetween(i+direction[j]*k,-1,25) && board[i+direction[j]*k]==Piece.black;k++){
+                                        System.out.printf("Move %d to %d to capture %d%n",(i+1),(1+i+direction[j]),(1+i+direction[j]*k));
+                                        none=false;
+                                    }
+                                    for(int k=-1;isBetween(i+direction[j]*k,-1,25) && board[i+direction[j]*k]==Piece.black;k--){
+                                        System.out.printf("Move %d to %d to capture %d%n",(i+1),(1+i+direction[j]),(1+i+direction[j]*k));
+                                        none=false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                
+                if(none)
+                    System.out.print("NONE");
+                System.out.println();
+		
+            }
+
+	}
+        
+        static boolean isBetween(int val, int lower, int upper){
+            return (val>lower && val<upper);
+        }
+        
+        static boolean onSameLine(int a, int b){
+            return isBetween(b,a-(a%5)-1,a-(a%5)+5);
+        }
+
+}

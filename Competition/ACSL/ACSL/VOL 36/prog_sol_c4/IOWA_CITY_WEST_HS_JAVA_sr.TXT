@@ -1,0 +1,285 @@
+// Kazimier Smith
+// Iowa City West High School
+// ACSL 2013 - 2014 Senior 5 Division
+// Contest 4
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Numble
+{
+	static int factorial(int n)
+	{
+		if (n == 0)
+			return 1;
+		else
+			return n * factorial(n - 1);
+	}
+
+	static int choose(int n, int k)
+	{
+		return factorial(n) / (factorial(k) * factorial(n - k));
+	}
+
+	static char[] toCharArray(int n)
+	{
+		return String.valueOf(n).toCharArray();
+	}
+
+	static int[] toDigitArray(String n)
+	{
+		int[] digits = new int[n.length()];
+
+		for (int i = 0; i < digits.length; i++)
+			digits[i] = Integer.parseInt(n.substring(i, i + 1));
+
+		return digits;
+	}
+
+	static void reverse(char[] a)
+	{
+		for (int i = 0; i < a.length / 2; i++)
+		{
+			char temp = a[i];
+			a[i] = a[a.length - i - 1];
+			a[a.length - i - 1] = temp;
+		}
+	}
+
+	static int toInt(int[] a)
+	{
+		int ans = 0;
+		for (int i = 0; i < a.length; i++)
+			ans += (int) Math.pow(10, i) * a[a.length - i - 1];
+
+		return ans;
+	}
+
+	static int indexOf(int[] a, int key)
+	{
+		for (int i = 0; i < a.length; i++)
+		{
+			if (a[i] == key)
+				return i;
+		}
+
+		return -1;
+	}
+
+	static int ansIndex = 0;
+
+	// combos should be the correct size to store all combinations
+	static void getCombinationsCharArray(char[] s, int i, int r, char[] combo, int comboIndex, String[] combos)
+	{
+		// we finished a combination
+		if (comboIndex == r)
+		{
+			combos[ansIndex] = String.valueOf(combo);
+			ansIndex++;
+
+			return;
+		}
+
+		// if we don't have any more characters to read, we're done
+		if (i >= s.length)
+			return;
+
+		combo[comboIndex] = s[i];
+
+		// case 1: character i in the char array s is included in the combination
+		getCombinationsCharArray(s, i + 1, r, combo, comboIndex + 1, combos);
+
+		// case 2: character i in the char array s is not included in the combination.
+		// Character i was already stored in the combination, so we just overwrite it
+		// by passing the same comboIndex (the next index to store a digit of the combination)
+		getCombinationsCharArray(s, i + 1, r, combo, comboIndex, combos);
+	}
+
+	static String[] getCombinations(String n, int r)
+	{
+		char[] nCharArr = n.toCharArray();
+
+		ansIndex = 0;
+		String[] combinations = new String[choose(nCharArr.length, r)];
+		getCombinationsCharArray(nCharArr, 0, r, new char[r], 0, combinations);
+
+		return combinations;
+	}
+
+	static int sumDigits(String n)
+	{
+		int sum = 0;
+		for (int i = 0; i < n.length(); i++)
+			sum += Integer.parseInt(n.substring(i, i + 1));
+
+		return sum;
+	}
+
+	static String maxSumDigitsMult5(String n, int length)
+	{
+		String[] combos = getCombinations(n, length);
+
+		int maxIndex = -1;
+		int max = 0;
+		for (int i = 0; i < combos.length; i++)
+		{
+			int digitSum = sumDigits(combos[i]);
+
+			if (digitSum % 5 == 0 && digitSum > max)
+			{
+				max = digitSum;
+				maxIndex = i;
+			}
+		}
+
+		return combos[maxIndex];
+	}
+
+	// returns the number of digits in the character string n
+	// that should be placed above the horizontal string in the final
+	// output, if the crossing digit is b
+	static int getNumDigitsAbove(String n, int b)
+	{
+		int[] digits = toDigitArray(n);
+
+		/*
+		 * if the character string has a leading zero, this zero must be above
+		 * the horizontal string (unless the crossing digit is 0), so begin
+		 * the count of the number of digits above the horizontal string
+		 * at 1.
+		 * If the crossing digit is 0, then the vertical string will start
+		 * at the 0 in the horizontal string, so the number of digits
+		 * above the horizontal string is 0.
+		 */
+		int c = 0;
+		if (n.charAt(0) == '0')
+		{
+			if (b == 0)
+				return 0;
+
+			c = 1;
+		}
+
+		for (int i = 0; i < digits.length; i++)
+		{
+			if (digits[i] > b)
+				c++;
+		}
+
+		return c;
+	}
+
+	// a is a sorted array of digits with exactly 2 0s as its last
+	// two elements.  This method removes one 0 from the end of a
+	// and puts that 0 at the beginning of a.
+	static void addLeadingZero(char[] a)
+	{
+		// shifts elements to the right one position
+		for (int i = a.length - 1; i > 0; i--)
+			a[i] = a[i - 1];
+
+		a[0] = '0';
+	}
+
+	static String numOrder(String n)
+	{
+		char[] digits = n.toCharArray();
+
+		Arrays.sort(digits);
+		reverse(digits);
+
+		/*
+		if the last two digits in the sorted array of digits are 0s,
+		one zero should be put at the front of the character string
+		to form a valid word.  We assume there are a maximum of 2 0s,
+		since a valid word cannot be formed if there are 3 or more 0s in the string.
+		*/
+		if (digits[digits.length - 1] == '0' && digits[digits.length - 2] == '0')
+			addLeadingZero(digits);
+
+		return String.valueOf(digits);
+	}
+
+	static int[][] getOutputArray(String n1, String n2, String n3, int cross1, int cross2)
+	{
+		n1 = numOrder(n1);
+		n2 = numOrder(n2);
+		n3 = numOrder(n3);
+
+		// counts leading zeroes
+		int n2DigitsAbove = getNumDigitsAbove(n2, cross1);
+		int n3DigitsAbove = getNumDigitsAbove(n3, cross2);
+		int topShift = Math.max(n2DigitsAbove, n3DigitsAbove);
+
+		int[][] out = new int[13][7];
+
+		// fill the output array with -1
+		// -1 indicates there is no digit in that space
+		for (int i = 0; i < out.length; i++)
+			Arrays.fill(out[i], -1);
+
+		int[] n1Digits = toDigitArray(n1);
+		System.arraycopy(n1Digits, 0, out[topShift], 0, n1Digits.length);
+
+		int n2StartRow = topShift - n2DigitsAbove;
+		int n3StartRow = topShift - n3DigitsAbove;
+		int n2Col = indexOf(n1Digits, cross1);
+		int n3Col = indexOf(n1Digits, cross2);
+
+		int[] n2Digits = toDigitArray(n2);
+		int[] n3Digits = toDigitArray(n3);
+
+		for (int i = 0; i < n2Digits.length; i++)
+			out[n2StartRow + i][n2Col] = n2Digits[i];
+
+		for (int i = 0; i < n3Digits.length; i++)
+			out[n3StartRow + i][n3Col] = n3Digits[i];
+
+		return out;
+	}
+
+	static void printOutputArray(int[][] out)
+	{
+		for (int i = 0; i < out.length; i++)
+		{
+			for (int j = 0; j < out[i].length; j++)
+			{
+				if (out[i][j] != -1)
+					System.out.print(out[i][j]);
+				else
+					System.out.print(" ");
+
+				System.out.print(" ");
+			}
+
+			System.out.println();
+		}
+	}
+
+	public static void main(String[] args)
+	{
+		Scanner in = new Scanner(System.in);
+		System.out.println("Enter input line 1 (character strings):");
+		String[] line1 = in.nextLine().split(" ");
+		System.out.println();
+
+		for (int i = 2; i <= 6; i++)
+		{
+			System.out.println("Enter input line " + i + ":");
+			String[] line = in.nextLine().split(" ");
+			System.out.println();
+
+			String s1 = maxSumDigitsMult5(line1[0], Integer.parseInt(line[0]));
+			String s2 = maxSumDigitsMult5(line1[1], Integer.parseInt(line[1]));
+			String s3 = maxSumDigitsMult5(line1[2], Integer.parseInt(line[2]));
+			int cross1 = Integer.parseInt(line[3]);
+			int cross2 = Integer.parseInt(line[4]);
+
+			System.out.println("Output " + (i - 1) + ":\n");
+			printOutputArray(getOutputArray(s1, s2, s3, cross1, cross2));
+		}
+
+		in.close();
+	}
+
+}

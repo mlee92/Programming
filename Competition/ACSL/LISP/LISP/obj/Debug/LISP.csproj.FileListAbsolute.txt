@@ -1,0 +1,6 @@
+c:\users\michael\documents\visual studio 2013\Projects\LISP\LISP\bin\Debug\LISP.exe.config
+c:\users\michael\documents\visual studio 2013\Projects\LISP\LISP\bin\Debug\LISP.exe
+c:\users\michael\documents\visual studio 2013\Projects\LISP\LISP\bin\Debug\LISP.pdb
+c:\users\michael\documents\visual studio 2013\Projects\LISP\LISP\obj\Debug\LISP.csprojResolveAssemblyReference.cache
+c:\users\michael\documents\visual studio 2013\Projects\LISP\LISP\obj\Debug\LISP.exe
+c:\users\michael\documents\visual studio 2013\Projects\LISP\LISP\obj\Debug\LISP.pdb

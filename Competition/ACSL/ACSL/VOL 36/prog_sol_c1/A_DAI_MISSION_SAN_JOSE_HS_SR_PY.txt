@@ -1,0 +1,55 @@
+#Alex Dai
+#Mission San Jose High School
+#Grade 11
+#Senior Division
+#ACSL 1
+
+board = []
+val = {'A':1,'E':1,'D':2,'R':2,'B':3,'M':3,'V':4,'Y':4,'J':8,'X':8}
+
+for i in range(41):
+    j = 0
+    if i%3==0 and i%2==1:
+        j = 1
+    elif i%5==0:
+        j = 2
+    elif i%7==0:
+        j = 3
+    elif i%8==0:
+        j = 4
+    board.append(j)
+
+word = input().split(", ")
+p = [val[word[i]] for i in range(4)]
+
+def calc(l,d):
+    cur = 0
+    dw = False
+    tw = False
+    step = 1
+    if d=='V':
+        step = 10
+    for j in range(4):
+        i = l + step*j
+        if board[i]==1:
+            cur += 2*p[j]
+        elif board[i]==2:
+            cur += 3*p[j]
+        else:
+            if board[i]==3:
+                dw = True
+            if board[i]==4:
+                tw = True
+            cur += p[j]
+    if dw:
+        cur *= 2
+    if tw:
+        cur *= 3
+    return cur
+
+for z in range(5):
+    locs = input().split(", ")
+    best = 0
+    for i in range(3):
+        best = max(best,calc(int(locs[2*i]),locs[2*i+1]))
+    print(best)

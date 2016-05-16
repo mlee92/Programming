@@ -1,0 +1,180 @@
+/**
+NAME: George MACA
+SCHOOL: "Grigore Moisil" NATIONAL COMPUTER SCIENCE COLLEGE
+GRADE: 11
+DIVISION: INT 5
+*/
+
+#include <cstdio>
+
+using namespace std;
+
+char str1[10],str2[10];
+int f1[11],f2[11],l1,l2,c,x[11],s1[11],s2[11],smax1,smax2;
+
+void reset()
+{
+    int i;
+    for(i=0;i<=11;i++)
+        s1[i]=s2[i]=x[i]=0;
+    smax1=smax2=0;
+}
+
+void citire()
+{
+    int i;
+    scanf("%s%s",&str1,&str2);
+    for(i=0;i<7;i++)
+        f1[str1[i]-'0']++;
+    for(i=0;i<7;i++)
+        f2[str2[i]-'0']++;
+    if(f1[0]>0)
+        f1[0]=1;
+    if(f2[0]>0)
+       f2[0]=1;
+}
+
+void sol1()
+{
+    int i,s=0;
+    for(i=1;i<=l1;i++)
+        s+=x[i];
+    if(s%5==0 && s>smax1)
+       {
+           smax1=s;
+           for(i=1;i<=l1;i++)
+           s1[i]=x[i];
+       }
+}
+
+void back1(int k, int poz)
+{
+    if(k==poz)
+       back1(k+1,poz);
+    else if(k==l1+1)
+       sol1();
+    else
+        {
+            int i,min=0;
+            if(k<poz)
+               min=x[poz];
+            for(i=x[k-1];i>=min;i--)
+                if(f1[i]>0)
+                   {
+                       x[k]=i;
+                       f1[i]--;
+                       back1(k+1,poz);
+                       f1[i]++;
+                   }
+        }
+}
+
+void sol2()
+{
+    int i,s=0;
+    for(i=1;i<=l2;i++)
+        s+=x[i];
+    if(s%5==0 && s>smax2)
+       {
+           smax2=s;
+           for(i=1;i<=l2;i++)
+           s2[i]=x[i];
+       }
+}
+
+void back2(int k, int poz)
+{
+    if(k==poz)
+       back2(k+1,poz);
+    else if(k==l2+1)
+       sol2();
+    else
+        {
+            int i,min=0;
+            if(k<poz)
+               min=x[poz];
+            for(i=x[k-1];i>=min;i--)
+                if(f2[i]>0)
+                   {
+                       x[k]=i;
+                       f2[i]--;
+                       back2(k+1,poz);
+                       f2[i]++;
+                   }
+        }
+}
+
+void rez()
+{
+    int i;
+    x[0]=10;
+    for(i=1;i<=l1;i++)
+        {
+            x[i]=c;
+            f1[c]--;
+            back1(1,i);
+            f1[c]++;
+        }
+    for(i=1;i<=l2;i++)
+        {
+            x[i]=c;
+            f2[c]--;
+            back2(1,i);
+            f2[c]++;
+        }
+}
+
+void afisare()
+{
+    int i,j,x,y;
+    for(i=1;i<=l2;i++)
+        if(s2[i]==c)
+           {
+               x=i;
+               break;
+           }
+    for(i=1;i<=l1;i++)
+        if(s1[i]==c)
+           {
+               y=i;
+               break;
+           }
+    for(i=1;i<x;i++)
+        {
+            for(j=1;j<=l1;j++)
+                if(j==y)
+                   printf("%d ",s2[i]);
+                else printf("  ");
+            printf("\n\n");
+        }
+    for(i=1;i<=l1;i++)
+        printf("%d ",s1[i]);
+    printf("\n\n");
+    for(i=x+1;i<=l2;i++)
+        {
+            for(j=1;j<=l1;j++)
+                if(j==y)
+                   printf("%d ",s2[i]);
+                else printf("  ");
+            printf("\n\n");
+        }
+    printf("\n\n\n");
+}
+
+int main()
+{
+    freopen("numble.in","r",stdin);
+
+    int x;
+    citire();
+    scanf("\n");
+    while(!feof(stdin))
+          {
+              scanf("%d, %d, %d\n",&l1,&l2,&c);
+              rez();
+              afisare();
+              reset();
+          }
+
+    return 0;
+}

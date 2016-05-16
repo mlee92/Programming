@@ -1,0 +1,167 @@
+#include <stdio.h>
+#include <stdlib.h>
+// Jeffrey Yuan
+// Mission San Jose High School
+// Intermediate 3
+int grid[5][5];
+int result;
+
+void one() {
+	result = 0;
+	int i,j;
+	int a,b;
+	for(i = 4 ; i >= 0 ; i--) {
+		for(j = 4 ; j >= 0 ; j--) {
+			if(grid[i][j] == 0) {
+				result = 5*i + (j+1);
+				a = i;
+				b = j;
+			}
+		}
+	}
+	if(result != 0) {
+		grid[a][b] = 1;
+	}
+}
+
+void two() {
+	result = 0;
+	int i,j;
+	int a,b;
+	for(i = 3 ; i >= 0 ; i--) {
+		for(j = 4 ; j >= 0 ; j--) {
+			if(grid[i+1][j] == 0 && grid[i][j] == 0) {
+				result = 5*i + (j + 1);
+				a = i;
+				b = j;
+			}
+		}
+	}
+	if(result != 0) {
+		grid[a][b] = 1;
+		grid[a+1][b] = 1;
+	}
+}
+
+void three() {
+	result = 0;
+	int i,j;
+	int a,b;
+	for(i = 4 ; i >= 0 ; i--) {
+		for(j = 3 ; j >= 0; j--) {
+			if(grid[i][j+1] == 0 && grid[i][j] == 0) {
+				result = 5*i + (j + 1);
+				a = i;
+				b = j;
+			}
+		}
+	}
+	if(result != 0) {
+		grid[a][b+1] = 1;
+		grid[a][b] = 1;
+	}
+}
+
+void four() {
+	result = 0;
+	int i,j;
+	int a,b;
+	for(i = 3 ; i >= 0 ; i--) {
+		for(j = 3 ; j >= 0; j--) {
+			if(grid[i][j] == 0 && grid[i+1][j] == 0 &&
+			grid[i+1][j+1] == 0) {
+				result = 5*i + (j+1);
+				a = i;
+				b = j;
+			}
+		}
+	}
+	if(result != 0) {
+		grid[a][b] = 1;
+		grid[a+1][b] = 1;
+		grid[a+1][b+1] = 1;
+	}
+}
+
+void five() {
+	result = 0;
+	int i,j;
+	int a,b;
+	for( i = 3 ; i >= 0 ; i--) {
+		for(j = 3 ; j >= 0 ; j--) {
+			if(grid[i][j] == 0 && grid[i+1][j] == 0 &&
+			grid[i][j+1] == 0) {
+				result = 5*i + (j+1);
+				a = i;
+				b = j;
+			}
+		}
+	}
+	if(result != 0) {
+		grid[a][b] = 1;
+		grid[a+1][b] = 1;
+		grid[a][b+1] = 1;
+	}
+}
+
+int main() {
+	int i,j;
+	for(i = 0 ; i < 5 ; i++) {
+		for(j = 0 ; j < 5 ; j++) {
+			grid[i][j] = 0;
+		}
+	}
+	char s[100];
+	int n;
+	int k;
+	printf("Input line 1: ");
+	scanf("%[0123456789]",s);
+	n = atoi(s);
+	/*printf("%d\n",n);*/
+	
+	for(i = 0 ; i < n ; i++) {
+		scanf("%*[ ,;] %[0123456789]",s);
+		k = atoi(s);
+		/*printf("%d\n",k);*/
+		grid[(k-1)/5][(k-1)%5] = 1;
+	}
+	
+	/*for(i = 4 ; i >= 0 ; i--) {
+		for( j = 0 ; j < 5 ; j++) {
+			printf("%d",grid[i][j]);
+		}
+		printf("\n");
+	}*/
+	
+	int input[5];
+	for(i = 0 ; i < 5 ; i++) {
+		printf("Input line %d: ",i+2);
+		scanf("%d",&input[i]);
+	}
+	
+	for(i = 0 ; i < 5 ; i++) {
+		switch(input[i]) {
+			case 1:
+				one();
+				break;
+			case 2:
+				two();
+				break;
+			case 3:
+				three();
+				break;
+			case 4:
+				four();
+				break;
+			case 5:
+				five();
+				break;
+			default:
+				printf("Could not understand input\n");
+		}
+		if(result == 0) printf("Output line %d: NONE\n",i);
+		else printf("Output line %d: %d\n",i+1,result);
+	}
+	
+	return(0);
+}

@@ -1,0 +1,56 @@
+//David Goldman
+//School: Freehold High School
+//School Code : 3001
+//Senior Divison
+//Mr. Gill
+//Contest 2
+//ACSL Bits
+
+
+package Contest_2;
+
+import java.util.*;
+
+public class DG_Bits {
+	public static void main(String[] args)
+	{
+		Scanner scanLine = new Scanner(System.in);
+		ArrayList<String> origStrings = new ArrayList<String>();
+		for (int i =0; i < 5; ++i)
+		{
+			System.out.println((i+1) + ". ");
+			String line = scanLine.nextLine();
+			Scanner thisLine = new Scanner(line.replaceAll(",", " "));
+			int numOf = thisLine.nextInt();
+			String firstLine = thisLine.next();
+			origStrings.add(firstLine);
+			char[] arr = firstLine.toCharArray();
+			for (int curString = 2; curString <= numOf; ++curString)
+			{
+				String cur = thisLine.next();
+				if (!origStrings.contains(cur))
+					origStrings.add(cur);
+				for (int charIndex = 0; charIndex < arr.length; ++charIndex){
+					if (arr[charIndex] !=cur.charAt(charIndex))
+						arr[charIndex] = '*';
+				}
+			}
+			String bitString = new String(arr);
+			int times = timesCharInString('*',bitString);
+			if (Math.pow(2, times) == origStrings.size()) 
+					System.out.println(bitString) ;
+			else System.out.println("NONE");
+			origStrings.clear();
+		}
+	}
+	public static int timesCharInString(char c, String s)
+	{
+		int numOf = 0;
+		for (char character : s.toCharArray())
+		{
+			if (character == c)
+				++numOf;
+		}
+		return numOf;
+	}
+}

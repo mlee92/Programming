@@ -1,0 +1,38 @@
+#include <iostream>
+#include <ctype.h> 
+
+using namespace std;
+bool first = true;
+bool second = true;
+string str; 
+
+bool check(){
+
+	for(int k = 0; k < str.size(); k++){
+		first &= (str[k] == toupper(str[k]));	
+	}
+	for(int j = 1; j < str.size(); j++){
+		second &= (str[j] == toupper(str[j]));
+	}
+	second &= (str[0] == tolower(str[0]));
+	return first || second;
+}
+
+string normalize(){
+    string normal = "";
+    check();
+    if(first) {normal += tolower(str[0]);}
+    if(second) {normal += toupper(str[0]);}
+    for(int i = 1; i < str.size(); i++) { 
+        normal += tolower(str[i]);
+    }
+    return normal;
+}
+
+int main(){
+    getline(cin, str);
+    bool c = check();
+    
+    if (c) { cout << normalize() << endl; } else { cout << str << endl;}
+}
+

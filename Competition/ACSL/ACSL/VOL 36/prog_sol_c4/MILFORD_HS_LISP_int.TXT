@@ -1,0 +1,132 @@
+#!/usr/bin/sbcl --script
+
+
+; Evan Rysdam
+; Milford High School
+; Division: Intermediate 3
+
+
+(defun choose (n ls &optional (sofar ()))
+  (if ls
+      (append (choose n (cdr ls) sofar)
+	  (choose (- n 1) (cdr ls) (cons (car ls) sofar)))
+    (if (= n 0)
+        (list sofar)
+      ())))
+
+(defun remove-dupe (ls)
+  (let ((hash (make-hash-table :test 'equalp))
+        (r ()))
+    (loop for i in ls
+          do (if (not (gethash i hash))
+	     (and (setf (gethash i hash) t)
+	          (push i r))))
+    r))
+
+(defun pigeon-sort (ls)
+  (let ((a (make-array 10 :initial-element 0))
+        (r ()))
+    (loop for i in ls
+          do (incf (aref a i)))
+    (loop for i from 0 to 9
+          do (loop for j from 1 to (aref a i)
+	       do (push i r)))
+    r))
+
+(defun choose-pair (a b)
+  (let ((r ()))
+    (loop for i in a
+          do (loop for j in b
+	       do (push (list i j) r)))
+    r))
+
+
+(defun prepare (n ls)
+  (remove-dupe (choose n (pigeon-sort ls))))
+
+(defun foo (a b ls1 ls2)
+  (choose-pair (prepare a ls1)
+	   (prepare b ls2)))
+
+
+(defun both-have (p cross)
+  (let ((fun (lambda (n) (= n cross))))
+    (and (some fun (car p))
+         (some fun (cadr p)))))
+
+(defun pair-sum (p)
+  (+ (loop for i in (car p) sum i)
+     (loop for i in (cadr p) sum i)))
+
+(defun pair-score (p cross)
+  (let ((s (pair-sum p)))
+    (if (and (zerop (mod (loop for i in (car p) sum i) 5))
+	 (zerop (mod (loop for i in (cadr p) sum i) 5))
+	 (both-have p cross))
+        s
+      0)))
+
+(defun best-pair (ps cross)
+  (let ((best 0)
+        (pair ()))
+    (loop for i in ps
+          do (let ((new (pair-score i cross)))
+	   (if (> new best)
+	       (and (setf best new)
+		(setf pair i)))))
+    pair))
+
+
+(defun first-occur (n ls)
+  (loop for i from 0
+        do (if (= n (nth i ls))
+	   (return i))))
+
+
+(defun solve (ls1 ls2 l1 l2 c)
+  (let ((a (best-pair (foo l1 l2 ls1 ls2) c)))
+    (list (reverse (car a))
+          (reverse (cadr a)))))
+
+
+(defun prn (pair cross)
+  (let* ((h (car pair))
+         (v (cadr pair))
+         (indent (first-occur cross h))
+         (where (first-occur cross v)))
+    (loop for i from 0 to (- (length v) 1)
+          do (if (not (= where i))
+	     (progn (loop for j from 1 to indent
+		    do (format t "   "))
+		(format t "~a~%~%" (nth i v)))
+	   (progn (loop for j in h do (format t "~a  " j))
+	          (format t "~%~%"))))))
+
+(defun parse (innn)
+  (let ((has-zero nil)
+        (r ()))
+    (loop while (> innn 0)
+          do (let ((a (mod innn 10)))
+	   (if (or (not (= a 0)) (not has-zero))
+	       (and (push a r)
+		(if (= a 0) (setf has-zero t))))
+	   (setf innn (/ (- innn a) 10))))
+    r))
+
+
+(defvar one (parse (read)))
+(read-char)
+(read-char)
+(defvar two (parse (read)))
+
+(loop for i from 2 to 6
+      do (let ((a (read)))
+           (read-char)
+           (read-char)
+           (let ((b (read)))
+	 (read-char)
+	 (read-char)
+	 (let ((c (read)))
+	   (format t "~%")
+	   (prn (solve one two a b c) c)))))
+

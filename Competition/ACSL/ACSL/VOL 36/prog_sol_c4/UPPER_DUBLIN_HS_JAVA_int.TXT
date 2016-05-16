@@ -1,0 +1,156 @@
+
+
+//Martin Schneider
+//Upper Dublin High School
+//Fort Washington, PA 19034
+//ACSL Contest #3
+//Intermediate 3 Division
+//Program was written using Java
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.Iterator;
+import java.util.StringTokenizer;
+import java.util.TreeSet;
+
+
+public class Main {
+	static BufferedReader f;
+	static StringTokenizer st;
+	static int [][] colors = new int[5][5];
+
+	public static void main(String[] args) throws Exception {
+
+		f = new BufferedReader(new java.io.InputStreamReader(System.in));
+
+		for(int i=0;i<5;i++){
+
+			String s = next().substring(2);
+
+			colors = new int[5][5];
+
+			int w=nextInt();
+			for(int c=0;c<w;c++){
+				int r=nextInt()-1;
+				colors[r%5][r/5]=1;
+			}
+
+			int b=nextInt();
+			for(int c=0;c<b;c++){
+				int r=nextInt()-1;
+				colors[r%5][r/5]=2;
+			}
+
+			/*
+			for(int y=0;y<5;y++){
+				for(int x=0;x<5;x++){
+					System.out.print(colors[x][y]);
+				}
+				System.out.println();
+			}*/
+
+			System.out.print((i+1)+". ");
+
+			boolean found=false;
+			for(int y=0;y<5;y++){
+				for(int x=0;x<5;x++){
+					if(colors[x][y]==1){
+						found=test(x,y,1,0)||found;
+						found=test(x,y,-1,0)||found;
+						found=test(x,y,0,1)||found;
+						found=test(x,y,0,-1)||found;
+						if(x==0&&y==0)found=test(x,y,1,1)||found;
+						if(x==1&&y==1)found=test(x,y,1,1)||found;
+						if(x==4&&y==0)found=test(x,y,-1,1)||found;
+						if(x==3&&y==1)found=test(x,y,-1,1)||found;
+						if(x==4&&y==4)found=test(x,y,-1,-1)||found;
+						if(x==3&&y==3)found=test(x,y,-1,-1)||found;
+						if(x==0&&y==4)found=test(x,y,1,-1)||found;
+						if(x==1&&y==3)found=test(x,y,1,-1)||found;
+					}
+				}
+			}
+			if(!found){
+				System.out.println("NONE");
+			}
+
+			//System.out.println();
+
+
+		}
+
+	}
+
+	public static boolean test(int x, int y,int cx, int cy){
+		if(color(x+cx,y+cy)==0){
+			if(color(x+cx*2,y+cy*2)==2){
+				TreeSet ans = new TreeSet();
+				ans.add(n(x+cx*2,y+cy*2));
+				if(color(x+cx*3,y+cy*3)==2){
+					ans.add(n(x+cx*3,y+cy*3));
+					if(color(x+cx*4,y+cy*4)==2){
+						ans.add(n(x+cx*4,y+cy*4));
+					}
+				}
+				Iterator i = ans.iterator();
+				boolean f=true;
+				while(i.hasNext()){
+					if(!f)System.out.print(", ");
+					f=false;
+					System.out.print(i.next());
+				}
+				System.out.println();
+				return true;
+			}
+		}
+		if(color(x-cx,y-cy)==0){
+			if(color(x+cx,y+cy)==2){
+				TreeSet ans = new TreeSet();
+				ans.add(n(x+cx,y+cy));
+				if(color(x+cx*2,y+cy*2)==2){
+					ans.add(n(x+cx*2,y+cy*2));
+					if(color(x+cx*3,y+cy*3)==2){
+						ans.add(n(x+cx*3,y+cy*3));
+						if(color(x+cx*4,y+cy*4)==2){
+							ans.add(n(x+cx*4,y+cy*4));
+						}
+					}
+				}
+				Iterator i = ans.iterator();
+				boolean f=true;
+				while(i.hasNext()){
+					if(!f)System.out.print(", ");
+					f=false;
+					System.out.print(i.next());
+				}
+				System.out.println();
+				return true;
+			}
+		}
+		return false;
+	}
+	public static int n(int x, int y){
+		return x+y*5+1;
+	}
+	public static int color(int x, int y){
+		if(x>=0&&x<5&&y>=0&&y<5){
+			return colors[x][y];
+		}else{
+			return -1;
+		}
+	}
+
+	static int nextInt() throws Exception {
+		return Integer.parseInt(next());
+	}
+
+	static String next() throws Exception {
+		while (st == null || !st.hasMoreTokens()) {
+			st = new StringTokenizer(f.readLine(),", ");
+		}
+		return st.nextToken();
+	}
+
+}
+
+

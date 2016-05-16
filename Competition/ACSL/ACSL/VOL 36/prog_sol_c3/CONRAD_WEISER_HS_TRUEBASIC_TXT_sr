@@ -1,0 +1,387 @@
+REM***********Ben Harakel***************
+REM******Conrad Weiser High School******
+REM************Senior 3*****************
+**************TRUE BASIC****************
+
+DO
+   DIM g(11,11), pos(11,11),f(23),e(23), ans(6),position(8)
+   LET count=0
+   LET numgood=0
+   LET numbad=0
+   LET flag=0
+   LET counter=0
+   LET counts=0
+   LET num=0
+   LET counting=counting+1
+
+   REM********BUILDING the matricies****
+   FOR i= 1 to 3
+       FOR j= 1 to 11
+
+           LET pos(i,j)=2
+           LET pos(j,i)=2
+           LET pos(j,i+8)=2
+           LET pos(i+8,j)=2
+
+           LET g(i,j)=0
+           LET g(j,i)=0
+           LET g(j,i+8)=0
+           LET g(i+8,j)=0
+       NEXT j
+   NEXT i
+
+   FOR i= 1 to 6
+       LET ans(i)=0
+   NEXT i
+
+
+   FOR i= 4 to 8
+       FOR j= 4 to 8
+           LET count=count+1
+           LET g(i,j)=count
+           LET pos(i,j)=0
+       NEXT j
+   NEXT i
+
+   PRINT "Input :";
+   PRINT counting
+
+   INPUT numgood
+   FOR i= 1 to numgood
+       LET counts=counts+1
+       INPUT f(counts)
+   NEXT i
+   INPUT numbad
+   LET counts=0
+   FOR i = 1 to numbad
+       LET counts=counts+1
+       INPUT e(counts)
+   NEXT i
+
+
+   REM*****PLACING the pieces****
+
+   FOR i= 1 to numgood
+       FOR j= 4 to 8
+           FOR k= 4 to 8
+               IF g(j,k)=f(i) then
+                  LET pos(j,k)=1
+               END IF
+           NEXT k
+       NEXT j
+   NEXT i
+
+   FOR i= 1 to numbad
+       FOR j= 4 to 8
+           FOR k= 4 to 8
+               IF g(j,k)=e(i) then
+                  LET pos(j,k)=-1
+               END IF
+           NEXT k
+       NEXT j
+   NEXT i
+
+
+
+   REM******** Making the decisions*************
+
+   FOR i = 4 to 8
+       FOR j= 4 to 8
+           IF pos(i,j)=1 then
+
+              LET flag=0
+              LET num=0
+
+              IF (IP(g(i,j)/2)<>g(i,j)/2) then
+
+                 REM**********************  position1 **************************
+                 IF (pos(i-1,j-1)=0) and (pos(i-2,j-2)=-1) then
+                    LET count=0
+                    FOR a=2 to 4
+                        LET count=count+1
+                        IF (pos(i-a,j-a)=-1) then
+                           LET ans(count)=g(i-a,j-a)
+                        END IF
+                    NEXT a
+                 END IF
+
+                 REM**********************  position1back **************************
+                 IF (pos(i+1,j+1)=0) and (pos(i-1,j-1)=-1) then
+                    LET count=0
+                    FOR a=1 to 3
+                        LET count=count+1
+                        IF (pos(i-a,j-a)=-1) then
+                           LET ans(count)=g(i-a,j-a)
+                        END IF
+                    NEXT a
+                 END IF
+
+                 REM**********************  position2 **************************
+                 IF (pos(i-1,j)=0) and (pos(i-2,j)=-1) then
+                    LET count=0
+                    FOR a=2 to 4
+                        LET count=count+1
+                        IF (pos(i-a,j)=-1) then
+                           LET ans(count)=g(i-a,j)
+                        END IF
+                    NEXT a
+                 END IF
+
+                 REM**********************  position2back **************************
+                 IF (pos(i+1,j)=0) and (pos(i-1,j)=-1) then
+                    LET count=0
+                    FOR a=1 to 3
+                        LET count=count+1
+                        IF (pos(i-a,j)=-1) then
+                           LET ans(count)=g(i-a,j)
+                        END IF
+                    NEXT a
+                 END IF
+
+                 REM**********************  position3 **************************
+                 IF (pos(i-1,j+1)=0) and (pos(i-2,j+2)=-1) then
+                    LET count=0
+                    FOR a=2 to 4
+                        LET count=count+1
+                        IF (pos(i-a,j+a)=-1) then
+                           LET ans(count)=g(i-a,j+a)
+                        END IF
+                    NEXT a
+                 END IF
+                 REM**********************  position3back **************************
+
+                 IF (pos(i+1,j-1)=0) and (pos(i-1,j+1)=-1) then
+                    LET count=0
+                    FOR a=1 to 3
+                        LET count=count+1
+                        IF (pos(i-a,j+a)=-1) then
+                           LET ans(count)=g(i-a,j+a)
+                        END IF
+                    NEXT a
+                 END IF
+                 REM**********************  position4 **************************
+                 IF (pos(i,j-1)=0) and (pos(i,j-2)=-1) then
+                    LET count=0
+                    FOR a=2 to 4
+                        LET count=count+1
+                        IF (pos(i,j-a)=-1) then
+                           LET ans(count)=g(i,j-a)
+                        END IF
+                    NEXT a
+                 END IF
+                 REM**********************  position4back **************************
+
+                 IF (pos(i,j+1)=0) and (pos(i,j-1)=-1) then
+                    LET count=0
+                    FOR a=1 to 3
+                        LET count=count+1
+                        IF (pos(i,j-a)=-1) then
+                           LET ans(count)=g(i,j-a)
+                        END IF
+                    NEXT a
+                 END IF
+                 REM**********************  position5 **************************
+                 IF (pos(i,j+1)=0) and (pos(i,j+2)=-1) then
+                    LET count=0
+                    FOR a=2 to 4
+                        LET count=count+1
+                        IF (pos(i,j+a)=-1) then
+                           LET ans(count)=g(i,j+a)
+                        END IF
+                    NEXT a
+                 END IF
+
+                 REM**********************  position5back **************************
+                 IF (pos(i,j-1)=0) and (pos(i,j+1)=-1) then
+                    LET count=0
+                    FOR a=1 to 3
+                        LET count=count+1
+                        IF (pos(i,j+a)=-1) then
+                           LET ans(count)=g(i,j+a)
+                        END IF
+                    NEXT a
+                 END IF
+                 REM**********************  position6 **************************
+                 IF (pos(i+1,j-1)=0) and (pos(i+2,j-2)=-1) then
+                    LET count=0
+                    FOR a=2 to 4
+                        LET count=count+1
+                        IF (pos(i+a,j-a)=-1) then
+                           LET ans(count)=g(i+a,j-a)
+                        END IF
+                    NEXT a
+                 END IF
+
+                 REM**********************  position6back **************************
+                 IF (pos(i-1,j+1)=0) and (pos(i+1,j-1)=-1) then
+                    LET count=0
+                    FOR a=1 to 3
+                        LET count=count+1
+                        IF (pos(i+a,j-a)=-1) then
+                           LET ans(count)=g(i+a,j-a)
+                        END IF
+                    NEXT a
+                 END IF
+                 REM**********************  position7 **************************
+                 IF (pos(i+1,j)=0) and (pos(i+2,j)=-1) then
+                    LET count=0
+                    FOR a=2 to 4
+                        LET count=count+1
+                        IF (pos(i+a,j)=-1) then
+                           LET ans(count)=g(i+a,j)
+                        END IF
+                    NEXT a
+                 END IF
+
+                 REM**********************  position7back **************************
+                 IF (pos(i-1,j)=0) and (pos(i+1,j)=-1) then
+                    LET count=0
+                    FOR a=1 to 3
+                        LET count=count+1
+                        IF (pos(i+a,j)=-1) then
+                           LET ans(count)=g(i+a,j)
+                        END IF
+                    NEXT a
+                 END IF
+                 REM**********************  position8 **************************
+                 IF (pos(i+1,j+1)=0) and (pos(i+2,j+2)=-1) then
+                    LET count=0
+                    FOR a=2 to 4
+                        LET count=count+1
+                        IF (pos(i+a,j+a)=-1) then
+                           LET ans(count)=g(i+a,j+a)
+                        END IF
+                    NEXT a
+                 END IF
+
+                 REM**********************  position8back **************************
+                 IF (pos(i-1,j-1)=0) and (pos(i+1,j+1)=-1) then
+                    LET count=0
+                    FOR a=1 to 3
+                        LET count=count+1
+                        IF (pos(i+a,j+a)=-1) then
+                           LET ans(count)=g(i+a,j+a)
+                        END IF
+                    NEXT a
+                 END IF
+
+              ELSE
+
+                 REM**********************  position2 **************************
+                 IF (pos(i-1,j)=0) and (pos(i-2,j)=-1) then
+                    LET count=0
+                    FOR a=2 to 4
+                        LET count=count+1
+                        IF (pos(i-a,j)=-1) then
+                           LET ans(count)=g(i-a,j)
+                        END IF
+                    NEXT a
+                 END IF
+
+                 REM**********************  position2back **************************
+                 IF (pos(i+1,j)=0) and (pos(i-1,j)=-1) then
+                    LET count=0
+                    FOR a=1 to 3
+                        LET count=count+1
+                        IF (pos(i-a,j)=-1) then
+                           LET ans(count)=g(i-a,j)
+                        END IF
+                    NEXT a
+                 END IF
+
+                 REM**********************  position4 **************************
+                 IF (pos(i,j-1)=0) and (pos(i,j-2)=-1) then
+                    LET count=0
+                    FOR a=2 to 4
+                        LET count=count+1
+                        IF (pos(i,j-a)=-1) then
+                           LET ans(count)=g(i,j-a)
+                        END IF
+                    NEXT a
+                 END IF
+                 REM**********************  position4back **************************
+
+                 IF (pos(i,j+1)=0) and (pos(i,j-1)=-1) then
+                    LET count=0
+                    FOR a=1 to 3
+                        LET count=count+1
+                        IF (pos(i,j-a)=-1) then
+                           LET ans(count)=g(i,j-a)
+                        END IF
+                    NEXT a
+                 END IF
+                 REM**********************  position5 **************************
+                 IF (pos(i,j+1)=0) and (pos(i,j+2)=-1) then
+                    LET count=0
+                    FOR a=2 to 4
+                        LET count=count+1
+                        IF (pos(i,j+a)=-1) then
+                           LET ans(count)=g(i,j+a)
+                        END IF
+                    NEXT a
+                 END IF
+
+                 REM**********************  position5back **************************
+                 IF (pos(i,j-1)=0) and (pos(i,j+1)=-1) then
+                    LET count=0
+                    FOR a=1 to 3
+                        LET count=count+1
+                        IF (pos(i,j+a)=-1) then
+                           LET ans(count)=g(i,j+a)
+                        END IF
+                    NEXT a
+                 END IF
+
+                 REM**********************  position7 **************************
+                 IF (pos(i+1,j)=0) and (pos(i+2,j)=-1) then
+                    LET count=0
+                    FOR a=2 to 4
+                        LET count=count+1
+                        IF (pos(i+a,j)=-1) then
+                           LET ans(count)=g(i+a,j)
+                        END IF
+                    NEXT a
+                 END IF
+
+                 REM**********************  position7back **************************
+                 IF (pos(i-1,j)=0) and (pos(i+1,j)=-1) then
+                    LET count=0
+                    FOR a=1 to 3
+                        LET count=count+1
+                        IF (pos(i+a,j)=-1) then
+                           LET ans(count)=g(i+a,j)
+                        END IF
+                    NEXT a
+                 END IF
+
+              END IF
+
+           END IF
+
+       NEXT j
+   NEXT i
+
+   PRINT "Output :";
+   PRINT counting
+
+   IF ans(1)<>0 then
+      PRINT ans(1);
+   END IF
+   IF ans(2)<>0 then
+      PRINT ",";
+      PRINT ans(2);
+   END IF
+   IF ans(3)<>0 then
+      PRINT ",";
+      PRINT ans(3)
+   END IF
+   IF ans(1)=0 and ans(2)=0 and ans(3)=0 then
+      PRINT "None"
+   END IF
+   PRINT
+   PRINT
+
+
+
+LOOP
+END

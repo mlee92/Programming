@@ -1,0 +1,187 @@
+//Siddhartha Edara
+//Thomas Jefferson High School for Science and Technology
+//Junior Division
+//Contest #2 2013-2014
+//Print Formatting
+//Java 7
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import javax.swing.JOptionPane;
+import java.util.*;
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
+
+class PrintFormattingv2
+{
+   public static void FinalValue(String string, double num)
+   {
+      //length will count starting with one, not zero
+      double len = string.length();
+
+      NumberFormat formatter = new DecimalFormat("#0.0");
+      double numlen = String.valueOf(formatter.format(num)).length()-2;
+      
+      int comma = 0;
+      int neg = 0;
+      int mon = 0;
+      int xmon = 0;
+     
+      //checking for $
+      String check = string.substring(0,1);
+      if(check.equals("$"))
+         mon++;
+      //checking for *$   
+      else if(check.equals("*"))
+         xmon++;
+      //checking for , and -
+      for(int i=0;i<len;i++)
+      {
+         String sub = string.substring(i,i+1);
+         if(sub.equals(","))
+            comma++;
+         if(sub.equals("-"))
+            neg++;
+      }
+      if(comma>0)
+      {
+         String fincomma = NumberFormat.getIntegerInstance().format(num);
+         if(numlen<len-1)
+         {
+            String ast = "";
+            double diff = (len-1)-numlen;
+            for(int i=1;i<=diff;i++)
+            {
+                  ast = ast + "*";
+            }
+            JOptionPane.showMessageDialog(null,ast+fincomma);
+         }
+         else
+         {
+            JOptionPane.showMessageDialog(null,fincomma);           
+         }
+      }
+      else if(neg>0)
+      {
+         //check if the num is pos or neg
+         String negcheck = String.valueOf(formatter.format(num)).substring(0,(int)numlen);
+         int signcheck = 0;
+         if(negcheck.substring(0,1).equals("-"))
+         {
+            signcheck++;
+            negcheck = negcheck.substring(1,(int)numlen)+"-";
+         }
+         else
+         {
+            negcheck = negcheck+"*";
+         }
+
+         double diff = len-1-(numlen-1);
+         String ast = "";
+         if(signcheck==1)
+         {
+            if(diff>0)
+            {
+               for(int i=1;i<=diff;i++)
+               {
+                  ast = ast+ "*";
+               }
+               JOptionPane.showMessageDialog(null, ast+negcheck);
+            }
+            else
+               JOptionPane.showMessageDialog(null, negcheck); 
+         }
+         else
+         {
+            if(diff>0)
+            {
+               for(int i=1;i<diff;i++)
+                  ast = ast+"*";
+               JOptionPane.showMessageDialog(null, ast+negcheck);
+            }
+            else
+               JOptionPane.showMessageDialog(null, negcheck);
+         }
+      }
+      
+      else if(mon>0)
+      {
+         JOptionPane.showMessageDialog(null,"$"+(int)num);
+      }
+      
+      else if(xmon>0)
+      {
+         if(numlen<len-2)
+         {
+            String ast = "";
+            double diff = (len-2)-numlen;
+//            System.out.println(diff);
+            for(int i=1;i<=diff;i++)
+            {
+                  ast = ast + "*";
+            }
+            JOptionPane.showMessageDialog(null,ast+"$"+(int)num);
+         }
+         else
+         {
+            JOptionPane.showMessageDialog(null,"$"+(int)num);           
+         }         
+      }
+      else
+      {
+         if(numlen<len)
+         {
+            String ast = "";
+            double diff = len-numlen;
+            for(int i=1;i<=diff;i++)
+            {
+                  ast = ast + "*";
+            }
+            JOptionPane.showMessageDialog(null,ast+(int)num);
+         }
+         else
+         {
+            JOptionPane.showMessageDialog(null,(int)num);           
+         }   
+      }
+   }
+   public static void main(String[] args)
+   {
+      //String located in string1, value located in num1
+      String input1 = JOptionPane.showInputDialog("1. Enter String and Integer Value with a comma followed by a space(ex: &&, 45)");
+      String[] parts1 = input1.split(", "); 
+      String string1 = parts1[0];
+      String value1 = parts1[1];   
+      double num1 = Double.parseDouble(value1); 
+      FinalValue(string1, num1);
+         
+      String input2 = JOptionPane.showInputDialog("2. Enter String and Integer Value with a comma followed by a space(ex: &&, 45)");
+      String[] parts2 = input2.split(", "); 
+      String string2 = parts2[0];
+      String value2 = parts2[1];      
+      double num2 = Double.parseDouble(value2); 
+      FinalValue(string2, num2);
+
+      String input3 = JOptionPane.showInputDialog("3. Enter String and Integer Value with a comma followed by a space(ex: &&, 45)");
+      String[] parts3 = input3.split(", "); 
+      String string3 = parts3[0];
+      String value3 = parts3[1];      
+      double num3 = Double.parseDouble(value3); 
+      FinalValue(string3, num3);
+    
+      String input4 = JOptionPane.showInputDialog("4. Enter String and Integer Value with a comma followed by a space(ex: &&, 45)");
+      String[] parts4 = input4.split(", "); 
+      String string4 = parts4[0];
+      String value4 = parts4[1];      
+      double num4 = Double.parseDouble(value4); 
+      FinalValue(string4, num4);
+
+      String input5 = JOptionPane.showInputDialog("5. Enter String and Integer Value with a comma followed by a space(ex: &&, 45)");
+      String[] parts5 = input5.split(", "); 
+      String string5 = parts5[0];
+      String value5 = parts5[1];
+      double num5 = Double.parseDouble(value5); 
+      FinalValue(string5, num5);
+   }
+}       

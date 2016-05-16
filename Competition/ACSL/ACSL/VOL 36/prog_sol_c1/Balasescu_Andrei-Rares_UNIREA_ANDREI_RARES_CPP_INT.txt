@@ -1,0 +1,72 @@
+/* Balasescu Andrei-Rares
+   "Unirea" N.C.
+   Int 3
+   Input file: balasescu.in
+   Output file: balasescu.out
+*/
+
+
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int i, casuta[4],inceput=0,scor=0,scorinit=0,j,multiplicator=1;
+char directie,cuvant[4];
+
+int puncte()
+{
+
+    if(cuvant[i]=='A'||cuvant[i]=='E') return 1;
+    if(cuvant[i]=='D'||cuvant[i]=='R') return 2;
+    if(cuvant[i]=='B'||cuvant[i]=='M') return 3;
+    if(cuvant[i]=='V'||cuvant[i]=='Y') return 4;
+    if(cuvant[i]=='J'||cuvant[i]=='X') return 8;
+
+    return 0;
+}
+
+int main()
+{
+    ifstream fin ("balasescu.in");
+    ofstream fout ("balasescu.out");
+
+    for(i=0;i<4;i++)
+        fin>>cuvant[i];
+    for(j=0;j<5;j++)
+    {
+        fin>>inceput>>directie;
+        scor=0;
+        multiplicator=1;
+
+        if(directie=='V')
+            for(i=0;i<4;i++)
+                casuta[i]=inceput+10*i;
+        else
+            for(i=0;i<4;i++)
+                casuta[i]=inceput+i;
+
+        for(i=0;i<4;i++)
+            {
+                if(casuta[i]%3==0 && casuta[i]%2!=0)
+                    scor+=puncte()*2;
+                else if(casuta[i]%5==0)
+                        scor+=puncte()*3;
+                     else if(casuta[i]%7==0)
+                            {
+                                scor+=puncte();
+                                multiplicator=2;
+                            }
+                          else if(casuta[i]%8==0)
+                                {
+                                    scor+=puncte();
+                                    multiplicator=3;
+                                }
+                                else
+                                    scor+=puncte();
+            }
+        scor=scor*multiplicator;
+        fout<<scor<<endl;
+    }
+    return 0;
+}

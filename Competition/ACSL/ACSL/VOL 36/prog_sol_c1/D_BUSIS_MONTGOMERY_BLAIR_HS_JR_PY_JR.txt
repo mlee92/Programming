@@ -1,0 +1,45 @@
+#Daniel Busis
+#Montgomery Blair High School
+#Junior
+
+exitall = 0
+letter_base = 0
+#J, A, V, A
+while (exitall != "leave"):
+    word = input ("Word: ")
+    word_mult = 1
+
+    for z in range(5):
+        start_loc = int(input ("Starting location? "))
+        word_mult = 1
+        point_count = 0
+        
+        for i in range(4):               
+            letter_mult = 1
+            
+            if word[3*i] == "A" or word[3*i] == "E":
+                letter_base=1
+            elif word[3*i] == "D" or word[3*i] == "R":
+                letter_base=2
+            elif word[3*i] == "B" or word[3*i] == "M":
+                letter_base=3
+            elif word[3*i] == "V" or word[3*i] == "Y":
+                letter_base=4
+            elif word[3*i] == "J" or word[3*i] == "X":
+                letter_base=8
+            
+            if (start_loc+i+3)/6==int((start_loc+i+3)/6):
+                letter_mult=2
+            elif (start_loc+i)/5==int((start_loc+i)/5):
+                letter_mult=3
+            elif (start_loc+i)/7==int((start_loc+i)/7):
+                word_mult=2
+            elif (start_loc+i)/8==int((start_loc+i)/8):
+                word_mult=3
+
+            point_count=point_count+letter_base*letter_mult
+        
+        word_score = point_count*word_mult
+        print(word_score)
+    exitall = input("Leave? ")
+

@@ -1,0 +1,57 @@
+// XV. gimnazija, Zagreb
+// Adrian Beker
+// Junior 5
+
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+
+char a[105], b[105], c[105];
+
+void solve() {
+    
+    scanf("%s%s", a, b);
+    
+    int m = strlen(a), n = strlen(b);
+    
+    if (a[0] == '$') printf("$%s\n", b);
+    else if (a[0] == '*') {
+        for (int i = 0; i < m - n - 2; i++) 
+            putchar('*');
+        printf("$%s\n", b);
+    }
+    else if (a[m - 1] == '-') {
+        for (int i = 0; i < m - n - 1; i++) 
+            putchar('*');
+        if (b[0] == '-') {
+            putchar('*');
+            for (int i = 1; i < n; i++) 
+                putchar(b[i]);
+            puts("-");
+        }
+        else printf("%s*\n", b);
+    }
+    else {
+        int cnt = 0;
+        for (int i = 0; i < m; i++) 
+            if (a[i] == ',') cnt++;
+        reverse(a, a + m);
+        reverse(b, b + n);
+        int i = 0, j = 0, k = 0;
+        for (; j < n || k < m - cnt; i++) 
+            if (i % 4 == 3 && cnt && j < n) c[i] = ',';
+            else if (j < n) { c[i] = b[j++]; k++; }
+            else { c[i] = '*'; k++; }
+        c[i] = '\0';
+        reverse(c, c + i);
+        printf("%s\n", c);
+    }
+    
+}
+
+int main() {
+    for (int i = 0; i < 5; i++) 
+        solve();
+    return 0;
+}

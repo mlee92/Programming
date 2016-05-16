@@ -1,0 +1,159 @@
+// Shivam Mittal
+// Holmdel High School
+// ACSL Contest #2
+// Intermediate 3 Division
+// 2013-2014
+
+import java.util.*;
+import java.io.*;
+
+class printformatting
+{
+
+	private static String[] output= new String[5];
+	private static String[] input= new String[]{"0","0","0"};
+
+	public static void main(String [] args) throws IOException
+	{
+		BufferedReader kb = new BufferedReader(new InputStreamReader(System.in));
+
+		System.out.println("Inputs:");
+	   	for(int k = 0; k<5;k++)
+    	{
+	    	System.out.print(k+1+". ");
+	    	StringTokenizer st = new StringTokenizer(kb.readLine(), ",");
+
+	    	for(int i=0;st.hasMoreTokens();i++)
+	    		input[i]=st.nextToken().trim();
+
+
+	    	output[k]= result();
+	    	input[0]="0";
+	    	input[1]="0";
+	    	input[2]="0";
+
+    	}
+
+    	System.out.println();
+    	System.out.println("Outputs:");
+
+    	for(int i=1; i<=5;i++)
+    		System.out.println(i+". "+output[i-1]);
+
+	}
+	public static String result()
+	{
+		String StringFinal=input[1];
+		boolean comma=false;
+		if(!(input[2].equals("0")))
+		{
+			comma=true;
+			input[0]=input[0]+input[1];
+			input[1]=input[2];
+		}
+
+		char[] StrArray = input[0].toCharArray();
+		char[] numArray = input[1].toCharArray();
+		double num  = Double.parseDouble(input[1]);
+		//Character[] charObjectArray = ArrayUtils.toObject(StrArray);
+		boolean dollarsign= false;
+		boolean decimal=false;
+		int decimalplace = 0;
+		int numcharacters=0;
+		for(int i=0; i<StrArray.length; i++)
+		{
+			if(StrArray[i]=='$')
+				dollarsign=true;
+			if(StrArray[i]=='.')
+			{
+				decimal=true;
+				decimalplace=i;
+			}
+			if(StrArray[i]=='&')
+				numcharacters++;
+		}
+		int numnums=0;
+		int numdecimalplace=numArray.length;
+		for(int i=0;i<numArray.length;i++)
+		{
+			if(numArray[i]=='.')
+			{
+				numdecimalplace=i;
+				numnums--;
+			}
+			numnums++;
+		}
+
+
+		String commasadded = (String)input[1];
+		int starsneeded=numcharacters-numnums;
+		if(!comma && !decimal && !dollarsign)
+		{
+			String stars="";
+			for(int i=1; i<=starsneeded; i++)
+    			stars= "*"+stars;
+			StringFinal=stars+(String)input[1];
+
+		}
+		if (comma && !decimal && !dollarsign)
+		{
+			int floatPos = commasadded.indexOf(".") > -1 ? commasadded.length() - commasadded.indexOf(".") : 0;
+    		int nGroups= (commasadded.length()-floatPos-1-(commasadded.indexOf("-")>-1?1:0))/3;
+    		for(int i=0; i<nGroups; i++)
+    		{
+       			int commaPos = commasadded.length() - i * 4 - 3 - floatPos;
+    			commasadded = commasadded.substring(0,commaPos) + "," + commasadded.substring(commaPos,commasadded.length());
+    		}
+
+    		for(int i=1; i<=starsneeded; i++)
+    			commasadded= "*"+commasadded;
+
+    		StringFinal=commasadded;
+		}
+		if(dollarsign && !comma && !decimal)
+		{
+			String stars="";
+			for(int i=1; i<=starsneeded; i++)
+    			stars= "*"+stars;
+			StringFinal=stars+ "$" + StringFinal;
+
+		}
+		int charsafterdecimal= numcharacters-decimalplace;
+		int charsbeforedecimal= decimalplace;
+		int numsafterdecimal= numnums-numdecimalplace;
+		int numsbeforedecimal= numdecimalplace;
+		int starsremaining=starsneeded;
+		if(dollarsign)
+			charsafterdecimal++;
+		if (!comma && decimal)
+		{
+			if(numsafterdecimal<charsafterdecimal)
+			{
+				String zeros="";
+				for(int i=1; i<=charsafterdecimal-numsafterdecimal; i++)
+				{
+					zeros+= "0";
+					starsremaining--;
+				}
+				StringFinal=StringFinal+zeros;
+			}
+			if(numsafterdecimal>charsafterdecimal)
+			{
+				double temp=Double.parseDouble(input[1]);
+				int temp1=(int)(Math.round((temp%1)*Math.pow(10,charsafterdecimal)));
+				StringFinal= ((int)(temp))+"."+temp1;
+				starsremaining=numcharacters-StringFinal.length()+1;
+			}
+			if(dollarsign)
+				StringFinal= "$"+StringFinal;
+			String stars="";
+			for(int i=1; i<=starsremaining; i++)
+				{
+					stars= "*"+stars;
+				}
+			StringFinal= stars+StringFinal;
+
+		}
+		return StringFinal;
+	}
+}

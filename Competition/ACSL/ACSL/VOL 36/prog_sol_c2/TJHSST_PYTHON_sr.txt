@@ -1,0 +1,108 @@
+#Wonkeun Choi (Anders), Grade 11
+#Thomas Jefferson High School for Science and Technology
+#Senior Division
+#Contest#2 2013-2014
+#ACSL Print Formatting
+
+def main():
+	file = open("acsl.in").read().split("\n")
+	while len(file) > 0:
+		data = file.pop(0).split()
+		string = data[0]
+		value = data[1]
+		clean = ""
+		answer = ""
+		comma = False
+		dollar = False
+		asterisk = False
+		scientific = False
+		for char in string:
+			if char == ',':
+				comma = True
+			elif char == '$':
+				dollar = True
+			elif char == '*':
+				asterisk = True
+			elif char == 'E':
+				scientific = True
+			else:
+				clean += char
+		if scientific == True:
+			if dollar:
+				answer += '$'
+			duplicate = float(value) / (10 ** (len(value) - 1))
+			duplicate = round(duplicate, len(clean) - 1)
+			if len(clean) == 1:
+				duplicate = str(int(duplicate))
+			else:
+				leftover = len(clean) - (len(str(duplicate)) - 1)
+				duplicate = str(duplicate)
+				for i in range(0, leftover):
+					duplicate += '0'
+			answer += duplicate + 'E' + str(len(value) - 1)
+		elif '.' in clean:
+			lenbefore = clean.index('.')
+			lenafter = len(clean) - clean.index('.') - 1
+			decimal = value.split('.')
+			before = decimal[0]
+			if len(decimal) == 2:
+				after = decimal[1]
+			else:
+				value += '.'
+				after = ""
+			if len(after) > lenafter:
+				value = str(round(float(value), lenafter))
+			decimal = value.split('.')
+			before = decimal[0]
+			if len(decimal) == 2:
+				after = decimal[1]
+			else:
+				after = ""
+			filler = lenafter - len(after)
+			for i in range(0, filler):
+				value += '0'
+			if dollar and not asterisk:
+				answer += '$'
+			else:
+				filler = lenbefore - len(before)
+				for i in range(0, filler):
+					answer += '*'
+				if dollar:
+					answer += '$'
+			if comma:
+				decimal = value.split('.')
+				before = decimal[0]
+				after = decimal[1]
+				temp = ""
+				for i in range(0, len(before)):
+					if i % 3 == 0 and i != 0:
+						temp += ','
+					temp += before[len(before) - i - 1]
+				before = ""
+				for i in range(0, len(temp)):
+					before += temp[len(temp) - i - 1]
+				value = before + '.' + after
+			answer += value
+		else:
+			if '.' in value:
+				value = str(int(round(float(value), 0)))
+			if dollar and not asterisk:
+				answer += '$'
+			else:
+				filler = len(clean) - len(value)
+				for i in range(0, filler):
+					answer += '*'
+				if dollar:
+					answer += '$'
+			if comma:
+				temp = ""
+				for i in range(0, len(value)):
+					if i % 3 == 0 and i != 0:
+						temp += ','
+					temp += value[len(value) - i - 1]
+				value = ""
+				for i in range(0, len(temp)):
+					value += temp[len(temp) - i - 1]
+			answer += value
+		print answer
+if __name__ == '__main__': main()

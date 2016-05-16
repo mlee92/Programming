@@ -1,0 +1,91 @@
+program fixfix;
+{Eric Russo
+4/13/2012
+Jr
+Enloe
+Lyerly
+Contest 4:PIP}
+
+uses crt;
+
+type
+recptr=^rec;
+rec=record
+  sign:char;
+  next:recptr;
+end;
+
+var
+  input:string;
+  output:array[1..5] of string;
+  i,j:integer;
+  sym:char;
+  head:recptr;
+
+procedure push(x:char);
+var tmp:recptr;
+begin
+  new(tmp);
+  tmp^.next:=head;
+  tmp^.sign:=x;
+  head:=tmp;
+end;
+
+function pop:char;
+begin
+  pop:=head^.sign;
+  head:=head^.next;
+end;
+
+function prcd(symbol:char):integer;
+begin
+  case symbol of
+    '+','-':prcd:=1;
+    '*':prcd:=2;
+  end;
+end;
+
+function reverse(s:string):string;
+var
+i:integer;
+tmp:char;
+begin
+  for i:=1 to length(s) div 2 do
+    begin
+      tmp:=s[i];
+      s[i]:=s[length(s)+1-i];
+      s[length(s)+1-i]:=tmp;
+      reverse:=s;
+    end;
+end;
+
+begin
+  clrscr;
+  head:=nil;
+  for i:=1 to 5 do
+    begin
+      readln(input);
+      input:=reverse(input);
+      for j:=1 to length(input) do
+        begin
+	  sym:=input[j];
+	  if (pos(sym,'+-*')=0) then
+	    output[i]:=concat(output[i],sym)
+	  else if (prcd(sym)>=prcd(head^.sign)) or (head=nil) then
+	    push(sym)
+          else if prcd(sym)<prcd(head^.sign) then
+	    begin
+	      while (prcd(sym)<prcd(head^.sign)) and (head<>nil) do
+	        output[i]:=concat(output[i],pop);
+              push(sym);
+	    end;
+	end;
+      while (head<>nil) do
+        output[i]:=concat(output[i],pop);
+      output[i]:=reverse(output[i]);
+    end;
+  writeln;
+  for i:=1 to 5 do
+    writeln(output[i]);
+  readln;
+end.

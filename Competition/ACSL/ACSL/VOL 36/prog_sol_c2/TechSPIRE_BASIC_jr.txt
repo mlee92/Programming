@@ -1,0 +1,186 @@
+' Saket Bikmal
+'TechSpire
+'Junior Division
+'8th grade
+'Contest 2
+
+Do
+
+[start]
+'Initializing Variables
+
+formstrandvalue$ = ""
+formstr$ = ""
+value$ = ""
+
+'Finding Input
+
+input "Enter format string and value, seperated by a comma and a space:"; formstrandvalue$
+
+fcpos = instr(formstrandvalue$, ", ")
+
+for p = fcpos+2 to len(formstrandvalue$)
+    value$ = value$ + mid$(formstrandvalue$, p, 1)
+next p
+
+value = val(value$)
+
+for q = 1 to fcpos-1 step 1
+    formstr$ = formstr$ + mid$(formstrandvalue$, q, 1)
+next q
+
+'Determining which case the format string falls under
+
+ for n = 1 to len(formstr$)
+
+    ipchar$ = mid$(formstr$, n, 1)
+
+    Select case ipchar$
+
+        Case "&"
+
+        Case ","
+            output$ = acomma$(formstr$, value$)
+            print output$
+            goto [start]
+
+        Case "$"
+            let output$ = adollar$(formstr$, value$)
+            print output$
+            goto [start]
+
+        Case "*"
+           if mid$(formstr$, n+1, 1) = "$" then
+            output$ = astdollar$(formstr$, value$)
+           else
+            output$ = "Invalid"
+           end if
+
+           print output$
+           goto [start]
+
+        Case "-"
+                    output$ = anegative$(formstr$, value)
+            print output$
+            goto [start]
+
+        end select
+
+  next n
+
+            output$ = allasterisks$(formstr$, value$)
+            print output$
+            goto [start]
+
+loop while i < 6
+
+' Defining functions used above
+
+
+FUNCTION allasterisks$(formstr$, value$)
+
+    let astnum = len(formstr$) - len(value$)
+
+    for m = 1 to astnum
+
+        astsec$ = "*" + astsec$
+
+    next m
+
+    allasterisks$ = astsec$ + value$
+
+END FUNCTION
+
+FUNCTION revvalue$(value$)
+
+    revvalue$ = ""
+    for r = len(value$) to 1 step -1
+        revvalue$ = revvalue$ + mid$(value$, r, 1)
+    next r
+
+END FUNCTION
+
+FUNCTION acomma$(formstr$, value$)
+
+    let astnum = len(formstr$) - len(value$)
+
+    for m = 1 to astnum - 1
+
+        astsec$ = "*" + astsec$
+
+    next m
+
+    nocommastr$ = astsec$ + value$
+
+    let revnocommastr$ = revvalue$(nocommastr$)
+'    print "rev no comma str = "; revnocommastr$
+
+    lennocommastr = len(revnocommastr$)
+'    print lennocommastr
+ '   numcommas = int(lennocommastr/3)
+
+    revop$ = ""
+    for k = 1 to lennocommastr step 3
+         revop$ = revop$ + mid$(revnocommastr$, k, 3) + ","
+'         print revop$
+    next k
+
+    acomma$ = mid$(revvalue$(revop$), 2, len(revop$) - 1)
+
+END FUNCTION
+
+
+
+Function adollar$(formstr$, value$)
+
+    adollar$ = "$" + value$
+
+END FUNCTION
+
+Function anegative$(formstr$, value)
+
+    if value < 0 then
+
+     let astnum = len(formstr$) - len(str$(value))
+
+    for m = 1 to astnum
+
+        astsec$ = "*" + astsec$
+
+    next m
+
+
+    anegative$ = astsec$ + str$(abs(value)) + "-"
+
+ else
+
+     let astnum = len(formstr$) - len(str$(value))
+
+    for m = 1 to astnum-1
+
+        astsec$ = "*" + astsec$
+
+    next m
+
+    anegative$ = astsec$ + str$(value) + "*"
+
+
+    end if
+
+end function
+
+Function astdollar$(formstr$, value$)
+
+    let astnum = len(formstr$) - len(value$)
+
+    for m = 1 to astnum-2
+
+        astsec$ = "*" + astsec$
+
+    next m
+
+    astdollar$ = astsec$ + "$" + value$
+
+END FUNCTION
+
+end

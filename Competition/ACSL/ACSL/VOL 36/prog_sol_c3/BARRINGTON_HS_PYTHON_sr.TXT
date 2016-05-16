@@ -1,0 +1,96 @@
+# Cassidy Laidlaw
+# 
+Barrington High School
+# 
+Senior Division 3
+#
+Python
+
+
+
+directions = [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]]
+
+
+def go_direction(start, direction):
+    
+x = (start - 1) % 5
+    
+y = (start - 1) / 5
+    
+x += direction[0]
+    
+y += direction[1]
+    
+if x < 0 or x >= 5 or y < 0 or y >= 5:
+        
+return -1
+    
+else:
+        
+return x + 5 * y + 1
+
+
+def opposite(direction):
+    
+return [d * -1 for d in direction]
+
+
+def show_cap(cap):
+    cap.sort()
+    
+print ", ".join([str(c) 
+for c in cap])
+
+
+def run_once():
+    sep = [int(p.strip()) 
+for p in raw_input().split(",")]
+    
+whites = sep[1:sep[0] + 1]
+    blacks = sep[sep[0] + 2:]
+    
+for white in whites:
+        
+dirs = directions 
+if white % 2 == 1 else directions[:4]
+        
+for dir in dirs:
+            
+new = go_direction(white, dir)
+            
+if new != -1 and new not in blacks and new not in whites:
+                
+cap = []
+                
+while go_direction(new, dir) in blacks:
+                    
+new = go_direction(new, dir)
+                    
+cap.append(new)
+                
+if len(cap) > 0:
+                    
+show_cap(cap)
+                    
+return
+                
+new = white
+                
+while go_direction(new, opposite(dir)) in blacks:
+                    
+new = go_direction(new, opposite(dir))
+                    
+cap.append(new)
+                
+if len(cap) > 0:
+                    
+show_cap(cap)
+                    
+return
+    print "NONE"
+
+
+for i in range(5):
+    
+run_once()
+

@@ -1,0 +1,160 @@
+
+
+Niyati Desai
+Ward Melville HS
+INTERMEDIATE
+﻿#!/usr/bin/perl
+
+#print "What is your word?\n";
+
+my @word = split(/\s+/, <>);
+
+#assign each element/letter of the word inputted in  @word
+ $a = @word[0];
+ chop($a);
+ $b = @word[1];
+ chop($b);
+ $c = @word[2];
+ chop($c);
+ $d = @word[3];
+
+#each letter's point values
+
+until (0 == 1) {
+
+if (($a eq "A")||($a eq "E")) {
+   $scorea = 1;
+} elsif (($a eq "D")||($a eq "R")) {
+   $scorea = 2;
+} elsif (($a eq "B")||($a eq "M")) {
+   $scorea = 3;
+} elsif (($a eq "V")||($a eq "Y"))  {
+   $scorea = 4;
+} elsif (($a eq "J")||($a eq "X")) {
+   $scorea = 8;
+}
+
+if (($b eq "A")||($b eq "E")) {
+   $scoreb = 1;
+} elsif (($b eq "D")||($b eq "R")) {
+   $scoreb = 2;
+} elsif (($b eq "B")||($b eq "M")) {
+   $scoreb = 3;
+} elsif (($b eq "V")||($b eq "Y"))  {
+   $scoreb = 4;
+} elsif (($b eq "J")||($b eq "X")) {
+   $scoreb = 8;
+}
+
+if (($c eq "A")||($c eq "E")) {
+   $scorec = 1;
+} elsif (($c eq "D")||($c eq "R")) {
+   $scorec = 2;
+} elsif (($c eq "B")||($c eq "M")) {
+   $scorec = 3;
+} elsif (($c eq "V")||($c eq "Y"))  {
+   $scorec = 4;
+} elsif (($c eq "J")||($c eq "X")) {
+   $scorec = 8;
+}
+
+if (($d eq "A")||($d eq "E")) {
+   $scored = 1;
+} elsif (($d eq "D")||($d eq "R")) {
+   $scored = 2;
+} elsif (($d eq "B")||($d eq "M")) {
+   $scored = 3;
+} elsif (($d eq "V")||($d eq "Y"))  {
+   $scored = 4;
+} elsif (($d eq "J")||($d eq "X")) {
+   $scored = 8;
+}
+
+## print "Letter 1:$scorea, Letter 2:$scoreb, Letter 3:$scorec, Letter 4:$scored\n";
+
+$subscore = ($scorea) + ($scoreb) + ($scorec) + ($scored);
+
+#inputting location and direction of the word
+
+#print "Where do you want to put this word?\n";
+
+my @arrangement = split(/\s+/, <>);
+
+ $posa = @arrangement[0];
+ chop($posa);
+ $direction = @arrangement[1];
+
+if ($direction eq "H") {
+   $posb = $posa +1;
+   $posc = $posa +2;
+   $posd = $posa +3;
+}  else {
+ $posb = $posa +10;
+ $posc = $posa +20;
+ $posd = $posa +30;
+}
+
+#print "$posa,$posb,$posc,$posd\n";
+
+#double and triple letter score multiplers
+
+if ($posa == 3||$posa == 9||$posa == 15||$posa == 21||$posa == 27||$posa == 33||$posa == 39) {
+   $scorea = 2 * $scorea;
+} elsif ($posa == 5||$posa == 10||$posa == 20||$posa == 25||$posa == 30||$posa == 35||$posa == 40) {
+   $scorea = 3 * $scorea;
+}
+
+if ($posb == 3||$posb == 9||$posb == 15||$posb == 21||$posb == 27||$posb == 33||$posb == 39) {
+   $scoreb = 2 * $scoreb;
+} elsif ($posb == 5||$posb == 10||$posb == 20||$posb == 25||$posb == 30||$posb == 35||$posb == 40){
+   $scoreb = 3 * $scoreb;
+} 
+
+if ($posc == 3||$posc == 9||$posc == 15||$posc == 21||$posc == 27||$posc == 33||$posc == 39) {
+   $scorec = 2 * $scorec;
+} elsif ($posc == 5||$posc == 10|| $posc == 20||$posc == 25||$posc == 30||$posc == 35||$posc == 40){
+   $scorec = 3 * $scorec;
+}
+
+if ($posd == 3||$posd == 9||$posd == 15||$posd == 21||$posd == 27||$posd == 33||$posd == 39) {
+   $scored = 2 * $scored;
+} elsif ($posd == 5||$posd == 10||$posd == 20||$posd == 25||$posd == 30||$posd == 35||$posd == 40){
+   $scored = 3 * $scored;
+}
+
+if (0) {
+print "new scorea =$scorea\n";
+print "new scoreb =$scoreb\n";
+print "new scorec =$scorec\n";
+print "new scored =$scored\n";
+}
+
+$subscore = ($scorea) + ($scoreb) + ($scorec) + ($scored);
+
+#print "subscore is $subscore\n";
+
+#double word and triple word score multipliers
+
+if ($posa == 8||$posa == 16||$posa == 24||$posa == 32) {
+   $score = 3 * $subscore;
+}  elsif ($posb == 8||$posb == 16||$posb == 24||$posb == 32) {
+   $score = 3 * $subscore;
+}  elsif ($posc == 8||$posc == 16||$posc == 24||$posc == 32) {
+   $score = 3 * $subscore;
+}  elsif ($posd == 8||$posd == 16||$posd == 24||$posd == 32) {
+   $score = 3 * $subscore;
+}  elsif ($posa == 7||$posa == 14||$posa == 28) {
+   $score = 2 * $subscore;
+} elsif ($posb == 7||$posb == 14||$posb == 28) {
+   $score = 2 * $subscore;
+} elsif ($posc == 7||$posc == 14||$posc == 28) {
+   $score = 2 * $subscore;
+} elsif ($posd == 7||$posd == 14||$posd == 28) {
+   $score = 2 * $subscore;
+} else {
+   $score = $subscore;
+}
+
+print "$score\n";
+
+}

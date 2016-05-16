@@ -1,0 +1,26 @@
+#include <iostream> 
+
+using namespace std; 
+
+bool addOrSubtract(string str){
+	bool ret = false; 
+	if(str[0] == '+' || str[1] == '+' || str[2] == '+'){
+		ret = true;	
+	} else {
+		ret  = false;	
+	}	
+	return ret; 
+}
+
+int main(){
+	int n = 0;
+	int x = 0;
+	cin >> n;
+	cin.ignore();
+	for(int i = 0; i < n; i++){
+		string str;	
+		getline(cin, str);
+		if(addOrSubtract(str)) { x++; } else {x--;} 
+	}
+	cout << x << endl;
+}

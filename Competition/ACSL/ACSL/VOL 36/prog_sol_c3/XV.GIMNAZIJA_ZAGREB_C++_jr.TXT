@@ -1,0 +1,92 @@
+// Adrian Beker 
+// XV. gimnazija Zagreb
+// Junior 5
+
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+struct point {
+	int x, y;
+	void input() {
+		int num; 
+		scanf("%d", &num); 
+		num--;
+		x = num / 5;
+		y = num % 5;
+	}
+};
+
+const int dx[] = {0, -1, 1, 0};
+const int dy[] = {-1, 0, 0, 1};
+
+int n, m;
+point a[30], b[30];
+int mat[10][10];
+
+void load() {
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) 
+		a[i].input();
+	scanf("%d", &m);
+	for (int i = 0; i < m; i++) 
+		b[i].input();
+}
+
+bool ok(int row, int col) {
+	return row >= 0 && col >= 0 && row < 5 && col < 5;
+}
+
+int get(int row, int col) {
+	return 5 * row + col + 1;
+}
+
+bool go(int row, int col, int dir) {
+	vector <int> v;
+	while (ok(row + dx[dir], col + dy[dir]) && mat[row + dx[dir]][col + dy[dir]] == 2) {
+		row += dx[dir];
+		col += dy[dir];
+		v.push_back(get(row, col));
+	}
+	if (v.empty()) return false;
+	sort(v.begin(), v.end());
+	printf("%d", v[0]);
+	for (int j = 1; j < v.size(); j++)
+		printf(", %d", v[j]);
+	puts("");
+	return true;
+}
+
+void solve() {
+	
+	memset(mat, 0, sizeof mat);
+	
+	for (int i = 0; i < n; i++) 
+		mat[a[i].x][a[i].y] = 1;
+		
+	for (int i = 0; i < m; i++) 
+		mat[b[i].x][b[i].y] = 2;
+		
+	for (int i = 0; i < n; i++) 
+		for (int k = 0; k < 4; k++) {
+			int nx = a[i].x + dx[k], mx = a[i].x - dx[k];
+			int ny = a[i].y + dy[k], my = a[i].y - dy[k];
+			if (ok(nx, ny) && !mat[nx][ny] && go(nx, ny, k)) return;
+			if (ok(mx, my) && !mat[mx][my] && go(a[i].x, a[i].y, k)) return;
+		}
+
+	puts("NONE");
+	
+}
+
+int main() {
+	
+	for (int i = 0; i < 5; i++) {
+		load();
+		solve();
+	}
+	
+	return 0;	
+}

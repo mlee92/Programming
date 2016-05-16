@@ -1,0 +1,92 @@
+# Sabrina Liu
+# Mission San Jose High School
+# Grade: 9
+# Senior Division/3
+# ACSL 4
+
+import string
+import itertools
+
+def numble():
+    var = input("enter three 7 digit strings: ")
+    numbers = var.split(',')
+    hnumber = sorted(numbers[0].strip(), reverse = True)
+    number1 = sorted(numbers[1].strip(), reverse = True)
+    number2 = sorted(numbers[2].strip(), reverse = True)
+
+    hnum = [int(i) for i in hnumber]
+    hnum.sort(reverse = True)
+    num1 = [int(i) for i in number1]
+    num1.sort(reverse = True)
+    num2 = [int(i) for i in number2]
+    num2.sort(reverse = True)
+    
+    while True:
+        var2 = input("enter lengths and crossing digits: ")
+        lcd = var2.split(',')
+        lhnum = int(lcd[0].strip())
+        lnum1 = int(lcd[1].strip())
+        lnum2 = int(lcd[2].strip())
+        cdnum1 = int(lcd[3].strip())
+        cdnum2 = int(lcd[4].strip())
+
+        oplist = itertools.combinations(hnum, lhnum)
+        for e in oplist:
+            if (sum(e) %5 ==0) and (cdnum1 in e) and (cdnum2 in e):
+                horiz = list(e)
+                break
+
+        oplist = itertools.combinations(num1, lnum1)
+        for e in oplist:
+            if (sum(e) %5 ==0) and (cdnum1 in e):
+                vert1 = list(e)
+                break
+
+        oplist = itertools.combinations(num2, lnum2)
+        for e in oplist:
+            if (sum(e) %5 ==0) and (cdnum2 in e):
+                vert2 = list(e)
+                break
+
+        if horiz[lhnum-2] == 0:
+            horiz.remove(0)
+            horiz.insert(0,0)
+        if vert1[lnum1-2] == 0:
+            vert1.remove(0)
+            vert1.insert(0,0)
+        if vert2[lnum2-2] == 0:
+            vert2.remove(0)
+            vert2.insert(0,0)
+
+        h = len(horiz)
+        v1top = vert1.index(cdnum1)
+        v1bottom = len(vert1) - v1top - 1
+        v1h = horiz.index(cdnum1)
+        v2top = vert2.index(cdnum2)
+        v2bottom = len(vert2) - v2top - 1
+        v2h = horiz.index(cdnum2)
+        totalheight = max(v1top,v2top)+max(v1bottom,v2bottom)+1
+        hdepth = max(v1top,v2top)
+        grid = [[-1 for y in range(0,h)] for x in range(0,totalheight)]
+        for i in range(0,h):
+            grid[hdepth][i] = horiz[i]
+        if hdepth == v1top:
+            v1start = 0
+            v2start = hdepth - v2top
+        else:
+            v1start = hdepth - v1top
+            v2start = 0
+        for i in range(0, lnum1):
+            grid[i+v1start][v1h] = vert1[i]
+        for i in range(0, lnum2):
+            grid[i+v2start][v2h] = vert2[i]
+        for i in range(0,totalheight):
+            strings = ''
+            for j in range(0,h):
+                if grid[i][j] == -1:
+                    strings += '  '
+                else:
+                    strings += (str(grid[i][j]) + ' ')
+            print(strings)
+
+numble()

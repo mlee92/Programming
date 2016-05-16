@@ -1,0 +1,197 @@
+REM Conrad Weiser HS
+REM Christian Chimenko
+
+DIM grid(7,5),input(1),inPat(5),gridFill(7,5),output$(5),loc(2)
+CALL makeGrid
+
+DO
+   LET flag=0
+   CALL emptyGrid
+
+   PRINT "Input:"
+   PRINT "   1)";
+   INPUT prompt " How many: ":hm
+   MAT redim input(hm)
+
+   FOR i=1 to hm
+       PRINT "      Block #";str$(i);
+       INPUT prompt ": ": input(i)
+   NEXT i
+
+   PRINT
+
+   FOR i=2 to 6
+       PRINT "   ";str$(i);
+       INPUT prompt ") ":inPat(i-1)
+   NEXT i
+
+   CALL fillGrid
+
+   FOR allIn=1 to 5
+       LET min=36
+       IF inPat(allIn)=1 then
+
+          FOR i=1 to 7
+              FOR j=1 to 5
+                  LET vFlag=1
+                  CALL checkVert(j)
+
+                  IF ((gridFill(i,j)=0) and (grid(i,j)<min) and (vFlag=1)) then
+                     LET min=grid(i,j)
+                     LET loc(1)=i
+                     LET loc(2)=j
+                     LET flag=1
+                  END IF
+              NEXT j
+          NEXT i
+
+          IF flag=1 then LET gridFill(loc(1),loc(2))=1
+
+       ELSE IF inPat(allIn)=2 then
+
+          FOR i=1 to 6
+              FOR j=1 to 5
+                  LET vFlag=1
+                  CALL checkVert(j)
+
+                  IF ((gridFill(i,j)=0) and (gridFill(i+1,j)=0) and (grid(i+1,j)<min) and (vFlag=1)) then
+                     LET min=grid(i+1,j)
+                     LET loc(1)=i
+                     LET loc(2)=j
+                     LET flag=1
+                  END IF
+              NEXT j
+          NEXT i
+
+          IF flag=1 then
+             LET gridFill(loc(1),loc(2))=1
+             LET gridFill(loc(1)+1,loc(2))=1
+          END IF
+
+       ELSE IF inPat(allIn)=3 then
+
+          FOR i=1 to 7
+              FOR j=1 to 4
+                  LET vFlag=1
+
+                  CALL checkVert(j)
+                  CALL checkVert(j+1)
+
+                  IF ((gridFill(i,j)=0) and (gridFill(i,j+1)=0) and (grid(i,j)<min) and (vFlag=1)) then
+                     LET min=grid(i,j)
+                     LET loc(1)=i
+                     LET loc(2)=j
+                     LET flag=1
+                  END IF
+              NEXT j
+          NEXT i
+
+          IF flag=1 then
+             LET gridFill(loc(1),loc(2))=1
+             LET gridFill(loc(1),loc(2)+1)=1
+          END IF
+
+       ELSE IF inPat(allIn)=4 then
+
+          FOR i=1 to 6
+              FOR j=1 to 4
+                  LET vFlag=1
+
+                  CALL checkVert(j)
+                  CALL checkVert(j+1)
+
+                  IF ((gridFill(i,j)=0) and (gridFill(i+1,j)=0) and (gridFill(i,j+1)=0) and (grid(i+1,j)<min) and (vFlag=1)) then
+                     LET min=grid(i+1,j)
+                     LET loc(1)=i
+                     LET loc(2)=j
+                     LET flag=1
+                  END IF
+              NEXT j
+          NEXT i
+
+          IF flag=1 then
+             LET gridFill(loc(1),loc(2))=1
+             LET gridFill(loc(1)+1,loc(2))=1
+             LET gridFill(loc(1),loc(2)+1)=1
+          END IF
+
+       ELSE IF inPat(allIn)=5 then
+          FOR i=1 to 6
+              FOR j=1 to 4
+                  LET vFlag=1
+
+                  CALL checkVert(j)
+                  CALL checkVert(j+1)
+
+                  IF ((gridFill(i,j)=0) and (gridFill(i+1,j)=0) and (gridFill(i+1,j+1)=0) and (grid(i+1,j)<min) and (vFlag=1)) then
+                     LET min=grid(i+1,j)
+                     LET loc(1)=i
+                     LET loc(2)=j
+                     LET flag=1
+                  END IF
+              NEXT j
+          NEXT i
+
+          IF flag=1 then
+             LET gridFill(loc(1),loc(2))=1
+             LET gridFill(loc(1)+1,loc(2))=1
+             LET gridFill(loc(1)+1,loc(2)+1)=1
+          END IF
+
+       END IF
+
+       IF min=36 then
+          LET output$(allIn)="NONE"
+       ELSE
+          LET output$(allIn)=str$(min)
+       END IF
+   NEXT allIn
+
+   PRINT
+   PRINT "Output: "
+   FOR i=1 to 5
+       PRINT "   ";str$(i);") ";output$(i)
+   NEXT i
+
+   PRINT
+   PRINT "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+   PRINT
+
+LOOP
+
+
+REM *********************SUBS***********************************
+
+SUB makeGrid
+    FOR i=1 to 7
+        FOR j=1 to 5
+            LET grid(8-i,j)=j+((i-1)*5)
+        NEXT j
+    NEXT i
+END SUB
+
+SUB fillGrid
+    FOR k=1 to hm
+        FOR i=1 to 7
+            FOR j=1 to 5
+                IF grid(i,j)=input(k) then LET gridFill(i,j)=1
+            NEXT j
+        NEXT i
+    NEXT k
+END SUB
+
+SUB emptyGrid
+    FOR i=1 to 7
+        FOR j=1 to 5
+            LET gridFill(i,j)=0
+        NEXT j
+    NEXT i
+END SUB
+
+SUB checkVert(col)
+    FOR x=1 to i
+        IF (gridFill(x,col)=1) then LET vFlag=0
+    NEXT x
+END SUB
+
+END

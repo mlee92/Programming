@@ -1,0 +1,238 @@
+// Patricia Shelton
+// ACSL Contest #4 2013-2014
+// Intermediate 3 Division
+// Holmdel High School
+
+import java.io.*;
+import java.util.*;
+//Patricia Shelton ACSL Intermediate Program 4
+//ACSL NUMBLE
+class FINALSheltonACSLIntermediateProgram2014_4
+{
+	public static void main(String[] args) throws IOException
+	{
+		BufferedReader kb= new BufferedReader(new InputStreamReader(System.in));
+
+		System.out.println("Please enter two 7 digit character strings seperated by a comma and a space:");
+		String input=kb.readLine();
+		String horizontal=input.substring(0, 7);
+		String vertical=input.substring(9);
+		int [] horiz=new int [7];
+		int [] vert=new int[7];
+		for(int i=0; i<7; i++)
+		{
+			if(i<6)
+			{
+				horiz[i]=Integer.parseInt(horizontal.substring(i, i+1));
+				vert[i]=Integer.parseInt(vertical.substring(i, i+1));
+			}
+			if(i==6)
+			{
+				horiz[i]=Integer.parseInt(horizontal.substring(i));
+				vert[i]=Integer.parseInt(vertical.substring(i));
+			}
+		}
+		horiz=sort(horiz);
+		vert=sort(vert);
+
+
+		for(int k=0; k<5; k++)
+		{
+			System.out.println("Please enter the length of the first string, the length of the second string, and the crossing digit, each seperated by a comma and a space:");
+			String nums=kb.readLine();
+
+			int lengthH=Integer.parseInt(nums.substring(0,1));
+			int lengthV=Integer.parseInt(nums.substring(3,4));
+			int crossing=Integer.parseInt(nums.substring(6));
+
+			int [] wordH=new int [lengthH];
+			int [] wordV=new int[lengthV];
+			wordH=combinations(horiz, lengthH, crossing);
+			wordV=combinations(vert, lengthV, crossing);
+			System.out.println();
+			output(wordH, wordV, crossing);
+		}
+	}
+	public static int [] combinations(int [] input, int length, int common)
+	{
+		int [] out=new int[length];
+		for(int i=0; i<length; i++)
+			out[i]=0;
+
+		if(input.length==length && hasX(input, common)==true && isWord(input)==true)
+			out=input;
+
+		int [][] a=new int [128][7];
+		for(int i=0; i<128; i++)
+		{
+			int k=i+1;
+			if(k/64>0)
+			{
+				a[i][0]=1;
+				k-=64;
+			}
+			else
+				a[i][0]=0;
+			if(k/32>0)
+			{
+				a[i][1]=1;
+				k-=32;
+			}
+			else
+				a[i][1]=0;
+			if(k/16>0)
+			{
+				a[i][2]=1;
+				k-=16;
+			}
+			else
+				a[i][2]=0;
+			if(k/8>0)
+			{
+				a[i][3]=1;
+				k-=8;
+			}
+			else
+				a[i][3]=0;
+			if(k/4>0)
+			{
+				a[i][4]=1;
+				k-=4;
+			}
+			else
+				a[i][4]=0;
+			if(k/2>0)
+			{
+				a[i][5]=1;
+				k-=2;
+			}
+			else
+				a[i][5]=0;
+			if(k/1>0)
+			{
+				a[i][6]=1;
+				k-=1;
+			}
+			else
+				a[i][6]=0;
+		}
+		for(int i=0; i<128; i++)
+		{
+			int [] word=new int[length];
+			int [] temp=new int [7];
+			for(int j=0; j<7; j++)
+			{
+				temp[j]=a[i][j];
+			}
+			if(sum(temp)==length)
+			{
+				int ctr=0;
+				for(int k=0; k<7; k++)
+				{
+					if(a[i][k]==1 && ctr<length)
+					{
+						word[ctr]=input[k];
+						ctr++;
+					}
+				}
+				if(hasX(word, common)==true && isWord(word)==true && sum(word)>sum(out))
+				{
+					out=word;
+
+
+				}
+			}
+		}
+		return out;
+
+		}
+	public static void output(int [] h, int [] v, int common)
+	{
+		int hpos=0;
+		int vpos=0;
+		for(int i=0; i<h.length; i++)
+		{
+			if(h[i]==common)
+			{
+				hpos=i;
+				break;
+			}
+		}
+
+		for(int i=0; i<v.length; i++)
+		{
+			if(v[i]==common)
+			{
+				vpos=i;
+				break;
+			}
+		}
+		for(int i=0; i<vpos; i++)
+		{
+			for(int j=0; j<hpos; j++)
+				System.out.print("   ");
+			System.out.print(v[i]+ "\n\n");
+		}
+		for(int i=0; i<h.length; i++)
+		{
+			System.out.print(h[i] + "  ");
+		}
+		System.out.println("\n");
+		for(int i=vpos+1; i<v.length; i++)
+		{
+			for(int j=0; j<hpos; j++)
+				System.out.print("   ");
+			System.out.print(v[i]+ "\n\n");
+		}
+
+	}
+	public static int [] sort( int [] nums)
+	{
+		int temp;
+		for (int i = 0; i < 6; i++)
+		{
+    		for (int j = 0; j < 6; j++)
+    		{
+        		if (nums[j] < nums[j+ 1])
+        		{
+            		temp = nums[j];
+            		nums[j] = nums[j + 1];
+            		nums[j + 1] = temp;
+        		}
+    		}
+		}
+		return nums;
+	}
+	public static boolean hasX(int [] nums, int common)
+	{
+		boolean out=false;
+		for(int i=0; i<nums.length; i++)
+		{
+			if(nums[i]==common)
+				out=true;
+		}
+		return out;
+	}
+	public static boolean isWord(int [] nums)
+	{
+		boolean out=false;
+		int sum=0;
+		for(int i=0; i<nums.length; i++)
+		{
+		 	sum+=nums[i];
+		}
+		if(sum%5==0)
+			out=true;
+		return out;
+	}
+	public static int sum(int [] nums)
+	{
+		int sum=0;
+		for(int i=0; i<nums.length; i++)
+		{
+			sum+=nums[i];
+		}
+		return sum;
+	}
+}
+

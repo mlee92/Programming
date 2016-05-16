@@ -1,0 +1,216 @@
+//Adithya Balaji
+//11/20/13
+//Contest #1 - Junior5
+//Enloe HS - Wright
+
+/* TO RESET UP DEBUG MODE:
+insert this code:
+cout<<"Your score1 is: "<<score1<<endl;
+cout<<"Your square is: "<<square<<endl;
+cout<<"Your multiplier is: "<<multiplier<<endl;
+After each score is calculated changing the "score1" to match the score var.
+*/
+
+#include<iostream>
+#include<iomanip>
+
+using namespace std;
+
+void letter_num(char letter, int &letter_score){
+    if (letter=='A'){
+        letter_score=1;
+    }
+    else if (letter=='E'){
+        letter_score=1;
+    }
+    else if (letter=='D'){
+        letter_score=2;
+    }
+    else if (letter=='R'){
+        letter_score=2;
+    }
+    else if (letter=='B'){
+        letter_score=3;
+    }
+    else if (letter=='M'){
+        letter_score=3;
+    }
+    else if (letter=='V'){
+        letter_score=4;
+    }
+    else if (letter=='Y'){
+        letter_score=4;
+    }
+    else if (letter=='J'){
+        letter_score=8;
+    }
+    else {
+        letter_score=8;
+    }
+}
+
+int scorevariables(int score, int start_num, int &multiplier){
+    if ((start_num%3==0)&&(start_num%2==1)) {
+        score=score*2;
+    }
+    else if (start_num%5==0){
+        score=score*3;
+    }
+    else if (start_num%7==0){
+        multiplier = multiplier*2;
+    }
+    else if (start_num%8==0){
+        multiplier = multiplier*3;
+    }
+    else {
+    }
+return score;
+}
+
+int main(){
+
+    char letter1, letter2, letter3, letter4;
+    int square;
+    int score1, score2, score3, score4;
+    int multiplier=1;
+    int fscore;
+
+    cout<<"Please enter your first 4 letters, succesively"<<endl;
+
+    cin>>letter1;
+    cin>>letter2;
+    cin>>letter3;
+    cin>>letter4;
+
+//first output
+    cout<<"Please enter your starting square"<<endl;
+    cin>>square;
+
+    letter_num(letter1, score1);
+    letter_num(letter2, score2);
+    letter_num(letter3, score3);
+    letter_num(letter4, score4);
+
+    score1=scorevariables(score1, square, multiplier);
+    square++;
+    score2=scorevariables(score2, square, multiplier);
+    square++;
+    score3=scorevariables(score3, square, multiplier);
+    square++;
+    score4=scorevariables(score4, square, multiplier);
+    square++;
+
+    fscore= ((score1+score2+score3+score4)*multiplier);
+    cout<<"Your score for round 1 is: "<<fscore<<endl;
+
+//second output
+//reset of vars
+    square=0;
+    multiplier=1;
+    fscore=0;
+
+    cout<<"Please enter your second starting square"<<endl;
+    cin>>square;
+
+//score reset
+    letter_num(letter1, score1);
+    letter_num(letter2, score2);
+    letter_num(letter3, score3);
+    letter_num(letter4, score4);
+
+    score1=scorevariables(score1, square, multiplier);
+    square++;
+    score2=scorevariables(score2, square, multiplier);
+    square++;
+    score3=scorevariables(score3, square, multiplier);
+    square++;
+    score4=scorevariables(score4, square, multiplier);
+    square++;
+
+    fscore= ((score1+score2+score3+score4)*multiplier);
+    cout<<"Your score for round 2 is: "<<fscore<<endl;
+
+//third output
+//reset of vars
+    square=0;
+    multiplier=1;
+    fscore=0;
+
+    cout<<"Please enter your third starting square"<<endl;
+    cin>>square;
+
+//score reset
+    letter_num(letter1, score1);
+    letter_num(letter2, score2);
+    letter_num(letter3, score3);
+    letter_num(letter4, score4);
+
+    score1=scorevariables(score1, square, multiplier);
+    square++;
+    score2=scorevariables(score2, square, multiplier);
+    square++;
+    score3=scorevariables(score3, square, multiplier);
+    square++;
+    score4=scorevariables(score4, square, multiplier);
+    square++;
+
+    fscore= ((score1+score2+score3+score4)*multiplier);
+    cout<<"Your score for round 3 is: "<<fscore<<endl;
+
+//fourth output
+//reset of vars
+    square=0;
+    multiplier=1;
+    fscore=0;
+
+    cout<<"Please enter your fourth starting square"<<endl;
+    cin>>square;
+
+//score reset
+    letter_num(letter1, score1);
+    letter_num(letter2, score2);
+    letter_num(letter3, score3);
+    letter_num(letter4, score4);
+
+    score1=scorevariables(score1, square, multiplier);
+    square++;
+    score2=scorevariables(score2, square, multiplier);
+    square++;
+    score3=scorevariables(score3, square, multiplier);
+    square++;
+    score4=scorevariables(score4, square, multiplier);
+    square++;
+
+    fscore= ((score1+score2+score3+score4)*multiplier);
+    cout<<"Your score for round 4 is: "<<fscore<<endl;
+
+//fifth output
+//reset of vars
+    square=0;
+    multiplier=1;
+    fscore=0;
+
+    cout<<"Please enter your fifth starting square"<<endl;
+    cin>>square;
+
+//score reset
+    letter_num(letter1, score1);
+    letter_num(letter2, score2);
+    letter_num(letter3, score3);
+    letter_num(letter4, score4);
+
+    score1=scorevariables(score1, square, multiplier);
+    square++;
+    score2=scorevariables(score2, square, multiplier);
+    square++;
+    score3=scorevariables(score3, square, multiplier);
+    square++;
+    score4=scorevariables(score4, square, multiplier);
+    square++;
+
+    fscore= ((score1+score2+score3+score4)*multiplier);
+    cout<<"Your score for round 5 is: "<<fscore<<endl;
+    cout<<"Thanks for Playing ACSL Scrabble!!!"<<endl;
+
+return 0;
+}

@@ -1,0 +1,58 @@
+//Aidan Curtis
+//12-20-13
+//Senior-5
+//ENLOE-HS
+//Potter
+#include <iostream>
+using namespace std;
+int numfinder(string word, int num)
+{
+    if(word[1]!=',')num+=((word[0]-'0')*10)+word[1]-'0';
+    else num+=word[0]-'0';
+    return num;
+}
+int letterreturn(char letter)
+{
+    if(letter=='A'||letter=='E')return 1;
+    else if(letter=='D'||letter=='R')return 2;
+    else if(letter=='B'||letter=='M')return 3;
+    else if (letter=='V'||letter=='Y')return 4;
+    else return 8;
+}
+int main()
+{
+    string word,locstring_init;
+    cin>>word;
+    for(int b=0; b<5; b++)
+    {
+        int big=0;
+        cin>>locstring_init;
+        for(int c=0; c<3; c++)
+        {
+            string locstring=locstring_init.substr(0,locstring_init.find(','));
+            locstring_init.erase(0,locstring_init.find(',')+1);
+            locstring+=',';
+            locstring+=locstring_init.substr(0,locstring_init.find(','));
+            locstring_init.erase(0,locstring_init.find(',')+1);
+            char letters[4];
+            int loc[4],wordmult=1,sum=0;
+            for(int a=0; a<4; a++)letters[a]=word[a*2];
+            if(locstring[locstring.length()-1]=='V')for(int a=0; a<4; a++)loc[a]=(numfinder(locstring,0))+(10*a);
+            if(locstring[locstring.length()-1]=='H')for(int a=0; a<4; a++)loc[a]=(numfinder(locstring,0))+(a);
+            for(int a=0; a<4; a++)
+            {
+                if(loc[a] % 3==0&&loc[a] % 6!=0)sum+=(letterreturn(letters[a]))*2;
+                else if(loc[a]%5==0)sum+=(letterreturn(letters[a]))*3;
+                else
+                {
+                    if(loc[a]%7==0)wordmult*=2;
+                    else if (loc[a]%8==0)wordmult*=3;
+                    sum+=letterreturn(letters[a]);
+                }
+            }
+            if (sum*wordmult>big)big=sum*wordmult;
+
+        }
+        cout<<big<<endl;
+    }
+}

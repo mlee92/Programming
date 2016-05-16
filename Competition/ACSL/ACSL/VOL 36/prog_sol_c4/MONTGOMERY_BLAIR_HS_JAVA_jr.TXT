@@ -1,0 +1,74 @@
+/**
+ Eshan Tewari
+ Montgomery Blair High School
+ ACSL Contest 4
+ Junior 5 Division
+ */
+
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class EshanTewariACSL4 {
+	
+	public static String[] combos = new String[35];
+	public static int combosIndex = 0;
+
+	
+	public static void main(String[] args){
+		Scanner in = new Scanner(System.in);
+		for(int i = 1; i <= 5; i++){
+			
+			combosIndex = 0;
+			Arrays.fill(combos, null);
+			
+			System.out.print("Input "+i+": ");
+			String s = in.nextLine();
+			int r = Integer.parseInt(s.substring(8)); //extract length
+			s = s.substring(0,7); //extract "word"
+			combinations(s.toCharArray(),0,r,"");
+			String output = "0";
+			int maxSum = 0;
+			for(int j = 0; j < combosIndex; j++){ //find combination with largest sum of digits in array
+				int sum = 0;
+				int num = Integer.parseInt(combos[j]);
+				
+		        while (num > 0){
+		            sum += num % 10;
+		            num /= 10;
+		        }
+		        	        
+				if(sum > maxSum && sum%5 ==0){
+					maxSum = sum;
+					output = "";
+					char[] cSum = combos[j].toCharArray(); //sort string into descending numerical order
+					Arrays.sort(cSum);
+					for(int a = cSum.length-1; a >= 0; a--){
+						output += cSum[a];
+					}
+				}
+				
+			}
+			
+			if(output == "0") output = "NONE";
+			System.out.print("Output "+i+": "+output+"\n");
+		}
+	}
+	
+	
+	public static void combinations(char[] S, int start, int r, String output) {
+		int length = S.length;
+		if (r == 1) {
+			for (int i = start; i < length; i++) {
+				String sum = output+S[i];
+				combos[combosIndex] = sum; //add combination to array
+				combosIndex ++;
+			}
+		}
+		else {
+			for (int k = start; k <= length - r; k++) {
+				combinations(S, k + 1, r - 1, output + S[k]);
+			}
+		}
+	}
+
+}

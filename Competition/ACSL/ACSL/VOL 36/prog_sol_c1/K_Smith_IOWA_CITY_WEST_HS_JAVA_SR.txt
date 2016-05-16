@@ -1,0 +1,112 @@
+/*
+ * Kazimier Smith
+ * Iowa City West High School
+ * ACSL 2013-2014, senior 5 division, contest 1
+ * Please use Java 1.7 when testing
+ */
+
+import java.util.Scanner;
+
+public class Scrabble_Kazimier_Smith
+{
+	static int getLetterValue(String letter)
+	{
+		// requires Java 1.7
+		switch (letter)
+		{
+			case "A": case "E":
+				return 1;
+			case "D": case "R":
+				return 2;
+			case "B": case "M":
+				return 3;
+			case "V": case "Y":
+				return 4;
+			case "J": case "X":
+				return 8;
+		}
+
+		return -1;
+	}
+
+	/* returns an integer array with 2 elements
+	 * the first is the score of the letter
+	 * the second is the multiplier for the entire word,
+	 * which is set to 2 or 3 if a Double/Triple Word square is encountered
+	 */
+	static int[] getScoreAndMult(String letter, int loc)
+	{
+		int score = getLetterValue(letter);
+		int multiplier = 1;
+
+		if (loc % 3 == 0 && loc % 2 != 0)
+			score *= 2;
+		else if (loc % 5 == 0)
+			score *= 3;
+		else if (loc % 7 == 0)
+			multiplier = 2;
+		else if (loc % 8 == 0)
+			multiplier = 3;
+
+		int[] scoreAndMult = new int[2];
+		scoreAndMult[0] = score;
+		scoreAndMult[1] = multiplier;
+		return scoreAndMult;
+	}
+
+	public static void main(String[] args)
+	{
+		// initialize board
+		int[][] board = new int[4][10];
+		for (int i = 0; i < board.length; i++)
+		{
+			for (int j = 0; j < board[i].length; j++)
+				board[i][j] = i * 10 + j + 1;
+		}
+
+		Scanner in = new Scanner(System.in);
+		System.out.println("Enter word:");
+		String[] word = in.nextLine().split(" ");
+
+		for (int inNum = 1; inNum <= 5; inNum++)
+		{
+			System.out.println("\nEnter starting location set " + inNum + ":");
+			int maxScore = 0;
+			for (int i = 0; i < 3; i++)
+			{
+				int startNum = in.nextInt();
+				String dir = in.next();
+				int row = (startNum - 1) / 10;
+				int col = (startNum - 1) % 10;
+
+				int score = 0, wordMultiplier = 1;
+				if (dir.equals("H"))
+				{
+					for (int j = col; j < col + word.length; j++)
+					{
+						int[] scoreAndMult = getScoreAndMult(word[j - col], board[row][j]);
+						score += scoreAndMult[0];
+
+						wordMultiplier *= scoreAndMult[1];
+					}
+				}
+				else
+				{
+					for (int k = row; k < row + word.length; k++)
+					{
+						int[] scoreAndMult = getScoreAndMult(word[k - row], board[k][col]);
+						score += scoreAndMult[0];
+
+						wordMultiplier *= scoreAndMult[1];
+					}
+				}
+
+				score *= wordMultiplier;
+				if (score > maxScore)
+					maxScore = score;
+			}
+			System.out.println("Output " + inNum + ": " + maxScore);
+		}
+		in.close();
+	}
+}

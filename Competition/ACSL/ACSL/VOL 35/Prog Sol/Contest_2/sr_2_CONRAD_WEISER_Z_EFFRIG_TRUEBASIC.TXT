@@ -1,0 +1,52 @@
+REM ZACC EFFRIG
+REM SENIOR 2
+
+DIM INOPT(5),BIT$(5,10),NUM$(5,10,30),FINAL$(5),ASTNUM(5)
+
+FOR I=1 TO 5
+    PRINT I;
+    INPUT INOPT(I)
+    FOR J=1 TO INOPT(I)
+        INPUT BIT$(I,J)
+    NEXT J
+NEXT I
+
+FOR I=1 TO 5
+    FOR K=1 TO INOPT(I)
+        FOR J=1 TO LEN(BIT$(I,K))
+            LET NUM$(I,K,J)=BIT$(I,K)[J:J]
+        NEXT J
+    NEXT K
+NEXT I
+
+FOR I=1 TO 5
+    FOR J=1 TO LEN(BIT$(I,1))
+        LET FLAG=0
+        FOR K=2 TO INOPT(I)
+            IF NUM$(I,1,J)=NUM$(I,K,J) THEN
+            ELSE
+               LET FLAG=FLAG+1
+            END IF
+
+        NEXT K
+        IF FLAG=0 THEN
+           LET FINAL$(I)=FINAL$(I)&NUM$(I,1,J)
+        ELSE IF FLAG<>0 THEN
+           LET FINAL$(I)=FINAL$(I)&"*"
+           LET ASTNUM(I)=ASTNUM(I)+1
+        END IF
+    NEXT J
+    IF 2^ASTNUM(I)<>INOPT(I) THEN
+       IF 2^ASTNUM(I)>INOPT(I) THEN
+          LET FINAL$(I)="NONE"
+       END IF
+    END IF
+NEXT I
+
+FOR I=1 TO 5
+    PRINT I,
+    PRINT FINAL$(I)
+    PRINT
+NEXT I
+
+END

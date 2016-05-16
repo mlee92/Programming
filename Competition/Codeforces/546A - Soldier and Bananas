@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std; 
+
+int K; // PRICE OF FIRST BANANA
+int N; // AT THE MOMENT HE HAS N DOLLARS
+int W; // HE WANTS THIS MUCH BANANA
+
+int main(){
+    cin >> K >> N >> W; 
+	int cost = 0; 
+	for(int  i = 1; i <= W; i++){
+		cost += i*K;
+	}
+	if(cost > N) { cout << cost - N << endl; }
+	else if(cost <= N) { cout << 0 << endl; } 
+}

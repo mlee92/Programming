@@ -1,0 +1,22 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+vector<int> moment;
+int people;
+
+int main(){
+	int n;
+	cin >> n; 
+	for(int i = 0; i < n; i++){
+		int out, in = 0;
+		cin >> out >> in;
+		people -= out;
+		people += in;
+		moment.push_back(people);
+	}
+	sort(moment.begin(), moment.end());
+	cout << moment[moment.size() - 1] << endl;	
+}

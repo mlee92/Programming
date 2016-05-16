@@ -1,0 +1,363 @@
+//Teddy Ni
+
+//Barrington High School
+
+//Senior Division
+
+
+
+import java.text.DecimalFormat;
+
+import java.util.*;
+
+
+
+public class Hah {
+
+public static ArrayList<String> Final = new ArrayList<String>();
+
+public static ArrayList<String> Values = new ArrayList<String>();
+
+public static void main(String args[]){
+
+Scanner Input = new Scanner(System.in);
+
+for(int i = 0; i < 5; i ++){
+
+Final.clear();
+
+Values.clear();
+
+String Raw1 = Input.nextLine();
+
+//Splitter
+
+int A = Raw1.indexOf(",");
+
+String[] Temp;
+
+String B = Raw1.substring(0,A);
+
+String C = Raw1.substring(A+1);
+
+if(C.contains(",")){
+
+Temp = new String[2];
+
+int D = C.indexOf(",") + A;
+
+Temp[0] = Raw1.substring(0,D+1);
+
+Temp[1] = Raw1.substring(D+2);
+
+}
+
+else
+
+Temp = Raw1.split(",");
+
+String Raw = Temp[0];
+
+String Value = Temp[1];
+
+String[] Char = Raw.split("");
+
+String[] TValues = Value.split("");
+
+for(int Count = 0; Count < TValues.length; Count ++){
+
+Values.add(TValues[Count]);
+
+}
+
+Decimal(Char);
+
+int NumC = 0;
+
+for(int Count = 0; Count < Char.length; Count ++){
+
+if(Char[Count].equals("&"))
+
+NumC ++;
+
+}
+
+if(Char[1].equals("$")){
+
+Coma(Char);
+
+System.out.println("$" + ValuesToString());
+
+}
+
+else if(Char[1].equals("*")){
+
+String Tempo = ValuesToString();
+
+int L = 0;
+
+if(Tempo.contains("."))
+
+L = NumC - Tempo.length() + 1;
+
+else
+
+L = NumC - Tempo.length();
+
+String Add = "";
+
+for(int Count = 1; Count <= L; Count ++)
+
+Add = Add + "*";
+
+Coma(Char);
+
+System.out.println(Add + "$" + ValuesToString());
+
+}
+
+else if(Char[Char.length-1].equals("E")){
+
+String In = "0.";
+
+for(int Count = 0; Count < NumC-1; Count ++)
+
+In = In + "0";
+
+In = In + "E0";
+
+DecimalFormat df = new DecimalFormat(In);
+
+System.out.println(df.format(Double.parseDouble(Value)));
+
+}
+
+else{
+
+String Tempo = ValuesToString();
+
+int L = 0;
+
+if(Tempo.contains("."))
+
+L = NumC - Tempo.length() + 1;
+
+else
+
+L = NumC - Tempo.length();
+
+String Add = "";
+
+for(int Count = 1; Count <= L; Count ++)
+
+Add = Add + "*";
+
+Coma(Char);
+
+System.out.println(Add + ValuesToString());
+
+}
+
+}
+
+}
+
+public static void Coma(String[] Char){
+
+boolean Coma = false;
+
+for(int Count = 0; Count < Char.length;Count ++){
+
+if(Char[Count].equals(",")){
+
+Coma = true;
+
+}
+
+}
+
+if(!Coma)
+
+return;
+
+ArrayList<String> Tiempo = new ArrayList<String>();
+
+int Counter = 0;
+
+for(int Count = Values.size()-1; Count>=0; Count --){
+
+if(Counter == 3){
+
+Tiempo.add(",");
+
+Counter = 0;
+
+}
+
+Tiempo.add(Values.get(Count));
+
+Counter ++;
+
+}
+
+Values.clear();
+
+for(int Count = Tiempo.size()-1; Count >= 0; Count --){
+
+Values.add(Tiempo.get(Count));
+
+}
+
+}
+
+public static void Decimal(String[] Char){
+
+int Place1 = -1;
+
+for(int Count = 0; Count < Char.length; Count ++){
+
+if(Char[Count].equals("."))
+
+Place1 = Count;
+
+}
+
+Place1 = Char.length - Place1;
+
+if(Place1 == -1)
+
+return;
+
+int Place2 =-1;
+
+for(int Count = 0; Count < Values.size(); Count ++){
+
+if(Values.get(Count).equals("."))
+
+Place2 = Count;
+
+}
+
+if(Place2 == -1)
+
+return;
+
+Place2 = Values.size() - Place2;
+
+if(Place1 > Place2){
+
+while(Place1 > Place2){
+
+Values.add("0");
+
+Place2++;
+
+}
+
+}
+
+else if (Place2 > Place1){
+
+int D = Place2 - Place1+1;
+
+String Temp = "";
+
+for(int Count = 0; Count < Values.size(); Count ++){
+
+Temp = Temp + Values.get(Count);
+
+}
+
+double A = Double.parseDouble(Temp);
+
+int IT = (int)Math.pow(10,D);
+
+double T = (double)Math.round(A * IT)/IT;
+
+String B = "" + T;
+
+String[] C = B.split("");
+
+//
+
+for(int Count = 0; Count < C.length; Count ++){
+
+if(C[Count].equals(".")){
+
+Place1 = Count;
+
+}
+
+}
+
+Place1 = C.length - Place1;
+
+for(int Count = 0; Count < Values.size(); Count ++){
+
+if(Values.get(Count).equals("."))
+
+Place2 = Count;
+
+}
+
+Place2 = Values.size() - Place2;
+
+String M = "";
+
+for(int Count = 0; Count < C.length; Count ++){
+
+M = M + C[Count];
+
+}
+
+while(Place1+1 < Place2){
+
+M = M + "0";
+
+Place1++;
+
+}
+
+//
+
+String[] CE = M.split("");
+
+Splitter(CE);
+
+}
+
+}
+
+public static String ValuesToString(){
+
+String Temp = "";
+
+for(int Count = 0; Count < Values.size(); Count ++){
+
+Temp = Temp + Values.get(Count);
+
+}
+
+return Temp;
+
+}
+
+public static void Splitter(String[] A){
+
+Values.clear();
+
+for(int Count = 0; Count < A.length; Count ++){
+
+Values.add(A[Count]);
+
+}
+
+}
+
+}
+
+ 
+
+Thanks,
+
+Teddy Ni

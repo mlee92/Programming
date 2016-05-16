@@ -1,0 +1,16 @@
+#include <iostream>
+#include <vector>
+
+using namespace std; 
+
+
+
+int main(){
+	long long n, m, a;
+	cin >> n >> m >> a;
+	long long r_flag = n / a;
+	if(n % a) r_flag ++;  
+	long long c_flag = m / a; 
+	if(m % a) c_flag ++; 
+	cout << r_flag * c_flag << endl; 
+}
