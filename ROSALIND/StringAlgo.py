@@ -147,4 +147,33 @@ def RNA2Protein(s):
 	codon = [s[i: i+3] for i in range(0, len(s), 3)]
 	prot = ''.join(RNA_CODON_TABLE[c] for c in codon)
 	return prot
+
+#LCSM Finding a Shared Motif 
+
+def generateSubstr(dna):
+	substr = {} 
+	checklen = 2
+	while(checklen != len(dna)):
+		pos1 = 0
+		pos2 = pos1 + checklen
+		while(pos2 != len(dna)):
+			sub = dna[pos1:pos2]
+			substr[sub] = len(sub)
+			pos1 += 1
+			pos2 = pos1 + checklen
+		checklen += 1
+	return set(substr.keys())
 	
+def longestMotifs(dnalib):
+	common = generateSubstr(dnalib[0])
+	for i in range(1, len(dnalib)):
+		dna = (dnalib[i])
+		sub = (generateSubstr(dna))
+		
+		intersection = sub & common 
+		common = [intersection]
+	print(common)
+
+Fas = processFASTA("rosalind_lcsm.txt")
+lib = list(Fas.values())
+print(lib)
