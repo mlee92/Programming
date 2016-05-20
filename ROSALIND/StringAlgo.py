@@ -151,29 +151,41 @@ def RNA2Protein(s):
 #LCSM Finding a Shared Motif 
 
 def generateSubstr(dna):
-	substr = {} 
+	substr = {}
 	checklen = 2
 	while(checklen != len(dna)):
 		pos1 = 0
 		pos2 = pos1 + checklen
 		while(pos2 != len(dna)):
 			sub = dna[pos1:pos2]
+			
 			substr[sub] = len(sub)
+
 			pos1 += 1
 			pos2 = pos1 + checklen
-		checklen += 1
-	return set(substr.keys())
-	
-def longestMotifs(dnalib):
-	common = generateSubstr(dnalib[0])
-	for i in range(1, len(dnalib)):
-		dna = (dnalib[i])
-		sub = (generateSubstr(dna))
-		
-		intersection = sub & common 
-		common = [intersection]
-	print(common)
 
+		checklen += 1	
+	return substr.keys()
+
+def longestMotif(dnalib):
+	common = set()
+
+	for dna in dnalib:
+		test = set(generateSubstr(dna))
+		if(len(common) == 0):
+			common = test
+		else:
+			common = common & test
+
+	longest = ""
+	for subs in common:
+		if(len(subs) > len(longest)):
+			longest = subs
+	return longest
+
+import time
+start_time = time.time()
 Fas = processFASTA("rosalind_lcsm.txt")
 lib = list(Fas.values())
-print(lib)
+print(longestMotif(lib))
+print("--- %s seconds ---" % (time.time() - start_time))

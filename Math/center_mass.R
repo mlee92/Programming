@@ -69,6 +69,10 @@ solve <- function(deg1, deg2){
 	
 	cm_x <- NULL
 	cm_y <- NULL
+	anova_x_mu <- NULL
+	anova_x_sd <- NULL
+	anova_y_mu <- NULL
+	anova_y_sd <- NULL
 	r2 <- NULL
 	for(deg in deg1:deg2){
 		curve <- lm(height ~ poly(pos, deg))
@@ -84,6 +88,11 @@ solve <- function(deg1, deg2){
 		points(x=c(cm[1]), y= c(cm[2]), col = colors[(deg / 5) + 1])
 		cm_x <- c(cm_x, cm[1])
 		cm_y <- c(cm_y, cm[2])
+
+		anova_x_mu <- c(anova_x_mu, mean(cm_x))
+		anova_x_sd <- c(anova_x_sd, sd(cm_x))
+		anova_y_mu <- c(anova_y_mu, mean(cm_y))
+		anova_y_sd <- c(anova_y_sd, sd(cm_y))
 		#print("Regression for degree")
 		#print(deg)
 		#print(cm)
@@ -95,6 +104,10 @@ solve <- function(deg1, deg2){
 	print(mu_x)
 	print(mu_y)
 	r2[order(-r2[,2], r2[, 1]), ]
+	cat("ANOVA X MU = ", anova_x_mu, " \n X SD = ", anova_x_sd, "\n")
+	cat("ANOVA Y MU = ", anova_y_mu, " \n Y SD = ", anova_y_sd, "\n")
 }
 
-solve(15, 17)
+solve(2, 17)
+
+
