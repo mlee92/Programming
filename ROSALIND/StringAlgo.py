@@ -181,11 +181,8 @@ def longestMotif(dnalib):
 	for subs in common:
 		if(len(subs) > len(longest)):
 			longest = subs
-	return longest
+	return subs
 
 import time
 start_time = time.time()
-Fas = processFASTA("rosalind_lcsm.txt")
-lib = list(Fas.values())
-print(longestMotif(lib))
 print("--- %s seconds ---" % (time.time() - start_time))
