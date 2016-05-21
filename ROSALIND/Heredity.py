@@ -62,3 +62,19 @@ def expNumDom(couples):
 		prob_d = probDominant(children, "A")
 		exp_prb[i] = prob_d * 2 * couples[i]
 	print sum(exp_prb)
+
+#LIA Independent Alleles
+
+def nCr(n,r):
+	import math
+	f = math.factorial
+	return f(n) / f(r) / f(n-r)
+
+def binomial_prob(p, n, k): # Probability of k successes over n trials with prob p
+	return nCr(n, k) * (p ** k) * ((1 - p) ** (n - k))
+
+def heterogeneousProb(n, k): # Probability of finding N heterogeneous in generation K
+	return binomial_prob(0.25, 2**k, n)
+
+def probFinder(k, N):
+	return 1 - sum(heterogeneousProb(n, k) for n in range(N))
